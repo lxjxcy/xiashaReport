@@ -1,18 +1,21 @@
 <template>
 	<div class="demand echartall">
-		<table>
-			<caption>{{title1}}</caption>
-			<tr v-for="(item,index) in list1">
-				<td>{{index+1}}</td>
-				<td>{{item.type}}</td>
-				<td>{{item.num}}</td>
-			</tr>
-		</table>
+		<div style="height: 221px">
+			<table>
+				<caption>{{title1}}</caption>
+				<tr v-for="(item,index) in list1">
+					<td class="indexcolor">{{index+1}}</td>
+					<td>{{item.name}}</td>
+					<td>{{item.num}}</td>
+				</tr>
+			</table>
+		</div>
+		
 		<table>
 			<caption>{{title2}}</caption>
 			<tr v-for="(item,index) in list1">
-				<td>{{index+1}}</td>
-				<td>{{item.type}}</td>
+				<td class="indexcolor">{{index+1}}</td>
+				<td>{{item.name}}</td>
 				<td>{{item.num}}</td>
 			</tr>
 		</table>
@@ -32,7 +35,7 @@
 			}
 		},
 		mounted(){
-			this.getlist(1)
+			// this.getlist(1)
 		},
 		methods:{
 			getlist(id){
@@ -60,38 +63,37 @@
 
 <style scoped>
 .demand{
-	width:485px;
-	height:205px;
-	margin-bottom: 8px;
-	/* margin:2px; */
-	display: flex;
-	justify-content: space-between;
-	position: relative;
-
-	/* padding-bottom: 3%; */
-	/* border-left: 2px solid #fff;
-	border-bottom: 2px solid #fff; */
+	width:292px;
+	height:442px;
 }
 table{
-	width:240px;
+	width:100%;
 }
+/* table{
+	width:240px;
+} */
 table tr td{
-	width:20%;
+	width:140px;
 	text-align: center;
-	line-height: 30px;
+	/* line-height: 30px; */
 	font-size: 14px;
-	color:#00fff9
+	color:#00fff9;
+	/* height:30px; */
 }
 table caption{
+	width:100%;
 	text-align: left;
 	line-height: 60px;
 	font-size: 20px;
 	font-weight: 500;
-	padding-left:30px;
+
 }
-.haveborder1{
-	height:50px;
-	width:50px;
+.indexcolor{
+	height:20px;
+	width:20px;
+	text-align: center;
+	line-height: 20px;
+	/* margin-right: 40px; */
 	border-radius: 50%;
 	background: #fbd676;
 	color: #fff;

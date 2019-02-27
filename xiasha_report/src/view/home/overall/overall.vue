@@ -2,32 +2,30 @@
 	<div class="overall">
 		<div >
 			<ul class="out-work">			
-				<!-- <li class="l"><parent></parent></li> -->
-				<li><rentalMonth></rentalMonth></li>
-				<li><rentalYear></rentalYear></li>
-				<li><presence></presence></li>
+				<LeadingCockpit></LeadingCockpit>
 				<li><entrepreneurData></entrepreneurData></li>
 				<li><businessAnalysis></businessAnalysis></li>
 			</ul>
 		</div>
 	</div>
-	
 </template>
-
 <script>
-	import rentalMonth from "./Leading_cockpit/rentalMonth/rentalMonth.vue"
+	// import 
+	import LeadingCockpit  from "./Leading_cockpit/leading_cockpit.vue"
+
 	import rentalYear from "./Leading_cockpit/rentalYear/rental_year.vue"
-	import presence from "./Leading_cockpit/presence/presence.vue"
+
 	import entrepreneurData from "./entrepreneur_data/entrepreneur_data.vue"
 	import businessAnalysis from "./business_analysis/business_analysis.vue"
-	import parent from "./parent.vue"
+
 	export default {
 		name:"overall",
 		components:{
-			parent,
-			rentalMonth,
+			LeadingCockpit,
+
 			rentalYear,
-			presence,
+
+			LeadingCockpit,
 			entrepreneurData,
 			businessAnalysis
 		},

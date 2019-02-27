@@ -1,83 +1,114 @@
 import { post } from '../axiosconfig/'
 import { get } from '../axiosconfig/'
+import util from '../common/js/tool'
+
+
+		
 export default {
 	
 	getRentMonth(params) {
-		return get('http://122.224.207.90:8885/report/rent/month', params)//租金收入月度趋势
+		
+		return get('http://101.37.124.231:8081/screen/query?number=21&year='+util.getYear()+'&group=communityName')//租金收入月度趋势
 	},
 	getRentCompare(params) {
-		return get('http://122.224.207.90:8885/report/rent/compare', params)//租金收入比对
+		return get('http://101.37.124.231:8081/screen/query?number=22&year='+util.getYear()+'&month='+util.getMonth())//租金收入比对
 	},
 	getRentArea(params) {
-		return get('http://122.224.207.90:8885/report/rent/area', params)//凭租面积
+		return get('http://101.37.124.231:8081/screen/query?number=24&year='+util.getYear())//凭租面积
 	},
 	getRentYear(params) {
-		return get('http://122.224.207.90:8885/report/rent/year', params)//年度租金收入
+		return get('http://101.37.124.231:8081/screen/query?number=23&year='+util.getYear()+'&month='+util.getMonth())//年度租金收入
+	},
+	getCustomerNumber(params) {
+		return get('http://101.37.124.231:8081/screen/query?number=25&year='+util.getYear()+'&group=clientType')//驻进客户数量
 	},
 
-	getCompanyNumber(params) {
-		return get('http://122.224.207.90:8885/report/company/number', params)//驻进企业数量
-	},
 	getCompanyDetail(params) {
-		return get('http://122.224.207.90:8885/report/company/detail', params)//驻进企业
+		return  get('http://101.37.124.231:8081/screen/query?number=26&year='+util.getYear()+'&month='+util.getMonth())//驻进企业
 	},
-	getCompanynInnovation(params) {
-		return get('http://122.224.207.90:8885/report/company/innovation', params)//企业创新
+		
+	getCompanyNumber(){
+		return  get('http://101.37.124.231:8081/screen/query?number=27&year='+util.getYear()+'&month='+util.getMonth())//地图企业数量
 	},
 	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	getCompanynInnovation(params) {
+		return get('http://101.37.124.231:8081/screen/company/innovation?year='+util.getYear()+'&month='+util.getMonth())//企业创新
+	},
 	getCompanynmployeesNumn(params) {
-		return get('http://122.224.207.90:8885/report/company/employeesNum', params)//企业人数
+		return get('http://101.37.124.231:8081/screen/company/employeesNum?year='+util.getYear()+'&month='+util.getMonth())//企业人数
 	},
 	getCompanynFinancing(params) {
-		return get('http://122.224.207.90:8885/report/company/financing', params)//企业融资
+		return get('http://101.37.124.231:8081/screen/query?number=5&year='+util.getYear()+'&month='+util.getMonth())//企业融资
 	},
 	getCompanynManage(params) {
-		return get('http://122.224.207.90:8885/report/company/manage', params)//企业经营
+		return get('http://101.37.124.231:8081/screen/company/manage?year='+util.getYear()+'&month='+util.getMonth())//企业经营
 	},
 	getCompanyTopNume(params) {
-		return get('http://122.224.207.90:8885/report/company/topNum', params)//企业进驻数量占比top5
+		return get('http://101.37.124.231:8081/screen/company/topNum?year='+util.getYear()+'&month='+util.getMonth())//企业进驻数量占比top5
 	},
 	getopEmployeesNume(params) {
-		return get('http://122.224.207.90:8885/report/company/topEmployeesNum', params)//企业员工人数占比top5
+		return get('http://101.37.124.231:8081/screen/company/topEmployeesNum?year='+util.getYear()+'&month='+util.getMonth())//企业员工人数占比top5
 	},
 	getCompanyElectric(params) {
 		return get('http://122.224.207.90:8885/report/company/electric', params)//企业用电量
 	},
 	getCompanyQualification(params) {
-		return get('http://122.224.207.90:8885/report/company/qualification', params)//企业融资
+		return get('http://101.37.124.231:8081/screen/company/qualification?year='+util.getYear()+'&month='+util.getMonth())//企业资质
 	},
 	getNationalProgram(params) {
-		return get('http://122.224.207.90:8885/report/company/nationalProgram', params)//国家计划项目
+		return get('http://101.37.124.231:8081/screen/company/nationalProgram?year='+util.getYear()+'&month='+util.getMonth())//国家计划项目
 	},
 	getCompanyHonor(params) {
-		return get('http://122.224.207.90:8885/report/company/honor', params)//国家计划项目
+		return get('http://101.37.124.231:8081/screen/query?number=9&year='+util.getYear()+'&month='+util.getMonth())//人才计划项目
 	},
 	
+	
+	
+	
+	
 	getArea(id) {
-		return get('http://122.224.207.90:8885/report/rent/area/'+id )//出租频率分析
+		// util.getMonth()
+		return get('http://101.37.124.231:8081/screen/query?communityId='+id+'&year='+util.getYear()+'&month='+util.getMonth()+'&number=14' )//出租频率分析
 	},
 	getReaBuilding(id) {
-		return get('http://122.224.207.90:8885/report/rent/area/building/'+id )//出租概率
+		return get('http://101.37.124.231:8081/screen/query?communityId='+id+'&year='+util.getYear()+'&month='+util.getMonth()+'&number=11' )//出租概率
 	},
 	getBuilding(id) {
-		return get('http://122.224.207.90:8885/report/rent/building/'+id )//租金收入
+		return get('http://101.37.124.231:8081/screen/query?communityId='+id+'&year='+util.getYear()+'&number=13&group=buildingName')//租金收入
 	},
-
 	getIntention(id) {
-		return get('http://122.224.207.90:8885/report/rent/area/intention/'+id )//招商需求分析
+		return get('http://101.37.124.231:8081/screen/query?communityId='+id+'&year='+util.getYear()+'&number=17&group=typeName' )//招商需求分析
 	},
 	getAreaRoom(id) {
-		return get('http://122.224.207.90:8885/report/rent/area/room/'+id )//空置面积占比分析
+		return get('http://101.37.124.231:8081/screen/query?communityId='+id+'&year='+util.getYear()+'&month='+util.getMonth()+'&number=15' )//空置面积占比分析
 	},
 	getDayRoom(id) {
-		return get('http://122.224.207.90:8885/report/rent/day/room/'+id )//空置天数占比分析
+		return get('http://101.37.124.231:8081/screen/query?communityId='+id+'&year='+util.getYear()+'&month='+util.getMonth()+'&number=16' )//空置天数占比分析
 	},
 	getPolicyNeed(id) {
-		return get('http://122.224.207.90:8885/report/policy/need/'+id )//企业政策需求排行
+		return get('http://101.37.124.231:8081/screen/query?communityId='+id+'&year='+util.getYear()+'&month='+util.getMonth()+'&number=18' )//企业政策需求排行
 	},
 	getServiceNeed(id) {
-		return get('http://122.224.207.90:8885/report/service/need/'+id )//企业服务需求排行
+		return get('http://101.37.124.231:8081/screen/query?communityId='+id+'&year='+util.getYear()+'&month='+util.getMonth()+'&number=19' )//企业服务需求排行
 	},
+	
+	getcomeNumber(id) {
+		return get('http://101.37.124.231:8081/screen/query?communityId='+id+'&year='+util.getYear()+'&number=12&group=clientType')//驻进客户数量
+	},
+	
+	getparkList(id) {
+		return get('http://101.37.124.231:8081/screen/query?number=20&&year='+util.getYear()+'&month='+util.getMonth())//园区列表
+	},
+	
 	
 	
 	

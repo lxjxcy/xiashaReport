@@ -1,36 +1,20 @@
 <template>
-	<div>
-		<div class="electric">
-			
-			<ul style="overflow: hidden;">
-				<li class="l">
-					<businessOperation></businessOperation>
-				</li>
-				<li class="l">
-					<Charts :id="id" class="echartall" :option="option" :height="height" :width="width"/>
-				</li>
-				
-			</ul>
-		</div>
-		
-		
-	
+	<div class="electric">			
+	<Charts :id="id" class="echartall" :option="option" :height="height" :width="width"/>	
 	</div>
 	
 </template>
 <script>	
-	import businessOperation  from "./business_operation.vue"//企业经营
+	
 	export default {
 		name:"electric",
-		components:{
-			businessOperation
-		},
+
 		data() {
 			return {
 				id:"electric",
-				width:"586px",
+				width:"690px",
 				j:0,
-				height:"250px",
+				height:"220px",
 				xAxis:['01月','02月','03月','04月','05月','06月','07月','08月','09月','10月','11月','12月',],
 				yAxis:["0","150","300","450","600","750"],
 
@@ -172,7 +156,7 @@
 .electric{
 	/* border-left: 2px solid #fff; */
 	/* padding-top:5px; */
-	width:100%
+	/* width:100% */
 	/* padding-left: 2%; */
 }
 	

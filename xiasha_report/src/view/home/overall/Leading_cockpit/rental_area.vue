@@ -13,7 +13,7 @@
 			return{
 				id:"rental_area",
 				width:"100%",
-				height:"250px",
+				height:"210px",
 				xAxis:['01月','02月','03月','04月','05月','06月','07月','08月','09月','10月','11月','12月',],
 				data:[340, 532, 401, 222, 390, 120,45,340, 532, 401, 222, 390, 120,0],
 				option:{
@@ -81,7 +81,7 @@
 							series: [{
 								data: this.data,
 								type: 'line',
-								symbol: "none",
+								// symbol: "none",
 								  smooth:true,
 								 areaStyle: {normal: {
                                 color: new echarts.graphic.LinearGradient(
@@ -127,7 +127,7 @@
 								show: true, //不能对水波图设置事件
 								formatter: function (value) {
 									// console.log(value)
-									return '剩余凭租\r\n\r\n'+'面积'+(value.value*100).toFixed(0)+"%";
+									return '剩余租赁\r\n\r\n'+'面积'+(value.value*100).toFixed(0)+"%";
 								},
 								position: ['50%', '30%'],
 								textStyle: {
@@ -146,33 +146,31 @@
 			}
 		},
 		mounted(){
+			this.option.xAxis.data=this.xAxis;
 			this.getlist()
 		},
 		methods:{
 			getlist(){
 				this.$api.getRentArea().then(res=>{
-					this.option.series[1].data[0].value=res.data.percent;
+					var len=res.data.length-1
+					this.option.series[1].data[0].value=1-res.data[len].percent;
 					var numdata=[]
 					var month=[]
-					res.data.content.forEach((e,i,a)=>{
+					res.data.forEach((e,i,a)=>{
 						numdata.push(e.num)
 						month.push(e.month+'月')
 					})
-					this.option.xAxis.data=month;
-					this.option.series[0].data=numdata;
-					
-					
+					this.option.series[0].data=numdata;					
 				})
 			}
-		}
-		
-		
+		}	
 	}
 </script>
 
 <style scoped>
 	.rental_area{
-		height:260px;
+		height:233px
+		/* height:260px; */
 	}
 
 

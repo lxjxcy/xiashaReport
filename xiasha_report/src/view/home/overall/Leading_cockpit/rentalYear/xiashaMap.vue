@@ -1,28 +1,29 @@
 <template>
 	
-	<div :style="{height:'500px',width:'800'}" ref="myxiasha"></div>
+	<div :style="{height:'450px',width:'600'}" ref="myxiasha"></div>
 	
 </template>
 
 <script>
 	import echarts from "echarts"
+	import xiashajson from "@/assets/map1.json"
 	export default {
 		name:"xiashaMap",
 		data(){
 			return{
 				geoCoordMap:{
-					'海创园':[118.88,28.97],
-					'海聚中心':[116.7,39.53],
-					'生命科技中心':[115.480656,35.23375],
-					'孵化器':[117.27,31.86],
-					'外包服务':[114.31,30.52],	
+					'文创园':[120.3441300000,30.3002700000],
+					'海聚中心':[120.3739930000,30.3070200000],
+					'生命科技中心':[120.3139200000,30.3002500000],
+					'孵化器':[120.3778839160,30.3098892722],
+					'外包服务':[120.3682750000,30.3088070000],	
 				},
 				data: [
 				 {name: '孵化器', value: 0},		 
 				 {name: '生命科技中心', value: 1},
-				 {name: '海创园', value: 2},
+				 {name: '文创园', value: 2},
 				 {name: '外包服务', value: 3},
-					{name: '海聚中心', value: 4},
+				{name: '海聚中心', value: 4},
 				
 
 				],
@@ -46,12 +47,13 @@
 				return res;
 		},
 			getMap(){
-				
+				echarts.registerMap('下沙', xiashajson);
 				let myxiasha = echarts.init(this.$refs.myxiasha); 
+				
 				myxiasha.setOption({
-					backgroundColor: '#404a59',
+					// backgroundColor: '#404a59',
 					title: {
-							text: '点亮中国：合作银行城市分布',							
+							text: '',							
 							left: 'left',
 							textStyle: {
 									color: '#fff'
@@ -71,7 +73,7 @@
 					},
 					grid: {
 						left: '10%',
-						top:"4%"	
+						bottom:"10%"	
 					},
 					visualMap: { //图例值控制
 							min : 0,
@@ -82,16 +84,18 @@
 									color:'#fff'
 							}
 					},
+		
+
 					
 					geo: {
-							map: 'china',
+							map: '下沙',
 							label: {
 									emphasis: {
 											show: false
 									}
 							},
 							roam: true,
-							zoom: 0.2,
+							zoom: 1,
 							itemStyle: {
 									normal: {
 											areaColor: '#323c48',
@@ -112,7 +116,7 @@
 											return b.value - a.value;
 									})),
 									symbolSize: function (val) {
-											return val[2] * 4 + 6 ;
+											return 10 ;
 									},
 									showEffectOn: 'render',
 									rippleEffect: {

@@ -8,16 +8,16 @@
 	</div>	
 </template>
 <script>
-	import rentalArea from "./rental_area.vue"
-	import rentalPrice from "./rental_price.vue"
-	import priceContrast from "./price_contrast.vue"
+// 	import rentalArea from "./rental_area.vue"
+// 	import rentalPrice from "./rental_price.vue"
+// 	import priceContrast from "./price_contrast.vue"
 	export default {
 		name:"rentalMonth",
-		components:{
-			rentalArea,
-			rentalPrice,
-			priceContrast
-		},
+// 		components:{
+// 			rentalArea,
+// 			rentalPrice,
+// 			priceContrast
+// 		},
 	}
 </script>
 

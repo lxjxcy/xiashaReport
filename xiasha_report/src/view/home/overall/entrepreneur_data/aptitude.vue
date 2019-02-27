@@ -1,15 +1,15 @@
 <template>
 	<div class="echartall Qualification">
 		<table class="tabth">
-			<tr>
+			<tr style="display: flex;justify-content: space-between;">
 				<th>企业资质资质名称</th>
 				<th>数量</th>
 			</tr>
 			<vue-seamless-scroll :data="list" class="seamless-warp">
 				<table class="item">
-					<tr v-for="item in list">
-						<td class="type" v-text="item.type" ></td>
-						<td class="num" v-text="item.num" ></td>
+					<tr v-for="item in list" style="display: flex;justify-content: space-between;">
+						<td class="type">{{item.type}}</td>
+						<td class="num" >{{item.num}}</td>
 					</tr>
 					
 				</table>
@@ -56,34 +56,31 @@
 
 <style scoped>
 	.seamless-warp {
-		height: 200px;
+		height: 180px;
 		overflow: hidden;
 		/* line-height: 20px; */
 	}
 	.Qualification{
+		width:400px;
+		height:230px;
 		
 	}
 	.tabth{
-		width:260px;
-		/* height:80px; */
-		margin-right:10px;
-		/* border:2px solid #fff; */
-		/* margin-top: 60px; */
+		width:400px;
+		
 	}
-	.tabth tr th{
+	table tr th{
 		text-align: center;
+		width:200px;
 		line-height:35px;
 		font-size: 18px;
 		color:#ffb400;
 	}
-	.item .type{
-		width:100%
-	}
-	.item .num{
-		width:100%
-	}
-	.item td{
+
+	table tr td{
+		width:200px;
 		text-align: center;
+		
 	}
 	
 

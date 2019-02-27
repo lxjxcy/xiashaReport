@@ -12,8 +12,8 @@
 		data() {
 			return {
 				id:"employees",
-				width:"100%",
-				height:"220px",
+				width:"300px",
+				height:"210px",
 				num:"249人",
 				option:{
 				    title : {
@@ -99,12 +99,42 @@
 				this.$api.getCompanynmployeesNumn().then(res=>{
 					var data=[];
 					this.option.title.text='企业人数'+res.data.total+'人';
-					res.data.content.forEach((e, i, a)=> {
-						data.push({
-							value:e.num,
-							name:e.type
-						})
+					var arr=res.data;
+					arr.forEach((e, i, a)=> {
+											
+						if(e.educationName=="博士"){
+							// a[i]["value"]=a[i].doctorNum.;
+							data.push({
+								value:e.doctorNum,
+								name:e.educationName
+							})
+						}
+						
+					
+						else if(e.educationName=="硕士"){
+							// a[i]["value"]=a[i].masterNum.;
+							data.push({
+								value:e.masterNum,
+								name:e.educationName
+							})
+						}
+						else if(e.educationName=="本科"){
+							// a[i]["value"]=a[i].undergraduateNum;
+							data.push({
+								value:e.undergraduateNum,
+								name:e.educationName
+							})
+							
+						}
+						else{
+							// a[i]["value"]=a[i].collegeNum;
+							data.push({
+								value:e.collegeNum,
+								name:e.educationName
+							})
+						}
 					})
+
 					this.option.series[0].data=data
 				})
 			}

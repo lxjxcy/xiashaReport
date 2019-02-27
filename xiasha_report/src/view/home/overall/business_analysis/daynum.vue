@@ -97,8 +97,8 @@
   		data() {
   			return {
   				id:"daynum",
-  				width:"100%",
-  				height:"250px",
+  				width:"357px",
+  				height:"200px",
   				option:{
   					title : {
   						text: '空置天数占比分析',
@@ -168,7 +168,7 @@
   			}
   		},
   		mounted(){
-  			this.getlist(1)
+  			// this.getlist(1)
   		
   		},
   		methods: {

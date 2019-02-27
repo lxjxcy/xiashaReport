@@ -13,8 +13,8 @@
 			data() {
 				return {
 					id:"intellectual",
-					width:"100%",
-					height:"230px",
+					width:"300px",
+					height:"210px",
 				option:{
 						title : {
 							text: '企业创新',
@@ -29,9 +29,7 @@
 						},
 						grid: {
 							left: '0',
-							top:"2%"
-							
-							
+							top:"2%"	
 						},
 						tooltip: {
 							trigger: 'item',
@@ -114,7 +112,7 @@
 					getlist(){
 						this.$api.getCompanynInnovation().then(res=>{
 							var data=[];
-							res.data.content.forEach((e, i, a)=> {
+							res.data.forEach((e, i, a)=> {
 								data.push({
 									value:e.num,
 									name:e.type
@@ -130,7 +128,7 @@
 
 <style scoped>
 	.innovate{
-		height:240px;
+		/* height:240px; */
 		/* padding: 2%; */
 		/* border-bottom: 1px solid #fff; */
 	}

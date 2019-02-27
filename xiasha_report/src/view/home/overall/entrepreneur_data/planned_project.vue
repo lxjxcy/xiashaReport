@@ -93,7 +93,7 @@
 
 <style scoped>
 	.seamless-warp {
-		height: 180px;
+		height: 195px;
 		overflow: hidden;
 		line-height: 20px;
 		width:100%;
@@ -123,14 +123,14 @@
 	.tab1{
 		padding: 1%;
 		width:48%;
-		height:190px;
+		height:195px;
 		
 		
 	}
 	.tab2{
 		padding: 1%;
 		width:48%;
-		height:190px;
+		height:195px;
 	}
 	.tab2 tr td{
 		width: 250px;

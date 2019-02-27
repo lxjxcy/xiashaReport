@@ -9,9 +9,9 @@
 		data() {
 			return {
 				id:"attract",
-				width:"600px",
+				width:"580px",
 				height:"230px",
-				xAxis:['01月','02月','03月','04月','05月','06月','07月','08月','09月','10月','11月','12月',],
+				xAxis:['01月','02月','03月','04月','05月','06月','07月','08月','09月','10月','11月','12月'],
 				clustering:[120, 132, 101, 134, 90, 230, 210,120, 132, 101, 134, 90, 230, 210],
 				technology:[220, 345, 191, 234, 111, 42, 45,220, 182, 567, 655, 732, 330, 233],
 				option:{
@@ -81,7 +81,8 @@
 			}
 		},
 		mounted(){
-			this.getlist(1);
+			// this.getlist(1);
+			this.option.xAxis.data=this.xAxis;
 		},
 		methods: {
 		 getlist(id){
@@ -95,16 +96,21 @@
 				// var type=["line","bar"]
 				this.option.legend.color=color;
 					data.forEach((e, i, a)=> {
-						this.option.legend.data[i]=e.typeName;
+						if(e.group==1){
+							var group="剩余凭租面积"
+						}else{
+							var group="招商意向面积"
+						}
+						this.option.legend.data[i]=group;
 						var numdata=[]
 						var month=[]
 						e.content.forEach((me,mi,ma)=>{
 							numdata.push(me.num)
 							month.push(me.month+'月')
 						})
-						this.option.xAxis.data=month;
+						if(e.content.length>1){
 							list.push({
-									name:e.typeName,
+									name:group,
 									type:'line',
 									symbol: "none",
 									smooth:true,
@@ -112,8 +118,6 @@
 									x:20,
 									barWidth : 20,//柱图宽度
 									data:numdata,
-								
-            // itemStyle: {normal: },
 									itemStyle: {//直线颜色
 										normal: {
 											color: color[i],
@@ -125,6 +129,30 @@
 									},
 								
 							})
+						}else{
+							list.push({
+									name:group,
+									type:'line',
+									// symbol: "none",
+									smooth:true,
+									// stack: '总量',
+									x:20,
+									barWidth : 20,//柱图宽度
+									data:numdata,
+									itemStyle: {//直线颜色
+										normal: {
+											color: color[i],
+											areaStyle: {type: 'default'},
+											lineStyle: {
+												color: color[i],
+											}
+										}
+									},
+								
+							})
+						}
+						
+							
 					})
 					this.option.series=list
 			}

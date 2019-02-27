@@ -15,10 +15,10 @@
 		data() {
 			return {
 			id:"income",
-			width:"600px",
-			height:"240px",
+			width:"580px",
+			height:"230px",
 			j:0,
-			xAxis:['01月','02月','03月','04月','05月','06月','07月','08月','09月','10月','11月','12月',],
+			
 			option:{
 				     title: {
 						text: '租金收入（万元）',
@@ -55,7 +55,7 @@
 					xAxis: {
 						type: 'category',
 						boundaryGap: false,
-						data: this.xAxis,
+						data: [],
 						splitLine: {
 							show: false
 						}, //去除网格线
@@ -89,7 +89,7 @@
 			}
 		},
 		mounted(){
-			this.getlist(1)
+			// this.getlist(1)
 			this.moveLine()
 		},
 		methods: {
@@ -105,7 +105,7 @@
 				var color=['#ff101c','#ff9100','#d03275','#00aad4',"#00bb6e",'#b4b32b']
 				this.option.legend.color=color;
 				data.forEach((e, i, a)=> {
-					this.option.legend.data[i]=e.typeName;	
+					this.option.legend.data[i]=e.group;	
 					var numdata=[]
 					var month=[]
 					e.content.forEach((me,mi,ma)=>{
@@ -114,7 +114,7 @@
 					})
 					this.option.xAxis.data=month;
 						list.push({
-								name:e.typeName,
+								name:e.group,
 								type:'line',
 								animation: false,
 								// stack: '总量',
@@ -134,7 +134,8 @@
 							
 						})
 				})
-				this.option.series=list
+				this.option.series=list;
+				console.log(list)
 			},
 			moveLine(){
 				this.timer = setTimeout(()=>{
@@ -166,7 +167,7 @@
 </script>
 <style scoped>
 .income{
-	height:250px;
+	/* height:250px; */
 	/* border-left: 2px solid #fff; */
 	/* padding-top:3%; */
 /* 	padding-left: 2%;

@@ -12,10 +12,10 @@
 			return {
 				id:"price_contrast",
 				width:"100%",
-				height:"200px",
+				height:"223px",
 				option:{
 					title : {
-						text: '租金收入比对',
+						text: '租金收入比对（万元）',
 						x:'left',
 						textStyle: {//主标题文本样式{"fontSize": 18,"fontWeight": "bolder","color": "#333"}
 							// fontFamily: 'Arial, Verdana, sans...',
@@ -137,7 +137,7 @@
 </script>
 <style scoped>
 .price_contrast{
-	height:210px;
+	height:233px;
 }
 	
 </style>

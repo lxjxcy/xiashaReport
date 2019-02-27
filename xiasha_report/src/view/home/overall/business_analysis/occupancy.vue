@@ -1,6 +1,6 @@
 <template>
 	<div class="occupancy" >
-		<Charts :id="id"  :option="option" :height="height" :width="width"/>
+		<Charts :id="id" v-if="hackReset"  :option="option" :height="height" :width="width"/>
 	</div>
 </template>
 <script>	
@@ -10,6 +10,7 @@ import echarts from "echarts";
 		data() {
 			return {
 				id:"occupancys",
+				hackReset:true,
 				width:"850px",
 				height:"200px",
 				
@@ -58,12 +59,16 @@ import echarts from "echarts";
 			}
 		},
 		mounted(){
-			this.getlist(1)
+			// this.getlist(1)
 		},
 		methods: {
 			getlist(id){
 				this.$api.getReaBuilding(id).then(res=>{
 					this.savedata(res.data)
+					this.hackReset = false
+						this.$nextTick(() => {
+						this.hackReset = true
+					})
 				})
 			},
 			
@@ -73,13 +78,13 @@ import echarts from "echarts";
 					// var centerleft=i*60/100
 					var center = 17*i+8;
 					needdata.push({
-            name: '',
-            type: 'pie',
-						radius: ['35%', '52%'],
-            center: [center + "%", "50%"],//饼图的位置 
-            avoidLabelOverlap: false,
-            hoverAnimation:false,
-            label: { //  饼图图形上的文本标签
+					name: '',
+					type: 'pie',
+					radius: ['35%', '52%'],
+				center: [center + "%", "50%"],//饼图的位置 
+				avoidLabelOverlap: false,
+				hoverAnimation:false,
+				  label: { //  饼图图形上的文本标签
                 normal: { // normal 是图形在默认状态下的样式
                     show: true,
                     position: 'center',
@@ -91,7 +96,7 @@ import echarts from "echarts";
                 }
             },
             data: [{
-                    value: (e.percent*100).toFixed(0),
+                    value: (e.rentalRate*100).toFixed(0)/100,
                     name: e.buildingName,
 						itemStyle: {
 			                normal: {
@@ -109,7 +114,7 @@ import echarts from "echarts";
                     }
                  },
                 {
-                    value: 100-(e.percent*100).toFixed(0),
+                    value: 100-(e.percent*100).toFixed(0)/100,
                     name: '',
 									itemStyle: {
 			                normal: {

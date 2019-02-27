@@ -6,9 +6,9 @@
 			</div>
 			<table>
 				<tr>
-					<th><span>企业名称</span></th>
-					<th><span>住进项目</span></th>
-					<th><span>面积</span></th>
+					<th ><span>企业名称</span></th>
+					<th ><span>住进项目</span></th>
+					<th ><span>面积</span></th>
 				</tr>
 			</table>
 			<vue-seamless-scroll :data="list" class="seamless-warp">
@@ -16,12 +16,11 @@
 					<tr v-for="item in list">
 						<td class="companyName" v-text="item.companyName"></td>
 						<td class="communityName" v-text="item.communityName"></td>
-						<td class="area" v-text="item.area"></td>
-						
+						<td class="area" v-text="item.areas">㎡</td>						
 					</tr>
 					
 				</table>
-				</vue-seamless-scroll>
+			</vue-seamless-scroll>
 				
 			
 		</div>
@@ -52,7 +51,13 @@
 	getlist(){
 		var params={}
 		this.$api.getCompanyDetail(params).then(res=>{
-			this.list=res.data
+			
+			this.list=res.data;
+			res.data.forEach((e,i,a)=>{
+				a[i]['areas']=e.area+"㎡"
+				// a['areas'][i]=				
+			})
+			
 			
 		})
 	},
@@ -76,8 +81,8 @@
 
 <style scoped>
 	.company{
-		width:585px;
-		height:415px;
+		width:450;
+		height:373px;
 		
 	}
 	.hradertitle{
@@ -87,7 +92,7 @@
 		color:#fff;
 	}
 	 .seamless-warp {
-        height: 300px;
+        height: 270px;
         overflow: hidden;
 		line-height: 20px;
     }
@@ -95,14 +100,14 @@
 		width:100%;
 	}
 	table tr th{
-		width: 200px;
+		width: 150px;
 		text-align: center;
 		line-height: 50px;
 		color:#00FFFF;
 		
 	}
 	 table tr th span{
-		/* padding:0 5%; */
+		/* padding:0 6%; */
 		text-align: center;
 		line-height: 24px;
 		border-radius: 5%;
@@ -112,11 +117,11 @@
 		
 	}
 	table tr td{
-		width: 200px;
+		width: 150px;
 		text-align: center;
-		overflow: hidden;
+		/* overflow: hidden;
 		text-overflow: ellipsis;
-		white-space: nowrap
+		white-space: nowrap */
 	}
 
 

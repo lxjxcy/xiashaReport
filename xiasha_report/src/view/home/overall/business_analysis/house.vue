@@ -15,8 +15,8 @@
 			return {
 				id:"house",
 			
-				width:"280px",
-				height:"480px",
+				width:"430px",
+				height:"200px",
 			
 				option:{
 					title : {
@@ -31,16 +31,16 @@
 						},
 					},
 					grid: {
-						left: '0',
-						top:"2%"	
+						left: '10%',
+						top:"20%"	
 					},
 					tooltip: {
 						trigger: 'item',
 						formatter: "{a} <br/>{b}: {c} ({d}%)"
 					},
 					legend: {
-						orient: 'horizontal',
-						// right: '50%',
+						orient: 'vertical',
+						right: '5%',
 						icon : 'circle',
 						top:'47%',
 						
@@ -48,27 +48,27 @@
 						color:['#fff'],
 							},
 							formatter: (name)=>{
-							var data=this.option.series[0].data
-							var total = 0;
-							var target;
-							for (var i = 0;i < data.length; i++) {
-							total += parseInt(data[i].value);
-							if (data[i].name == name) {
-								target = data[i].value;
+								var data=this.option.series[0].data
+								var total = 0;
+								var target;
+								for (var i = 0;i < data.length; i++) {
+								total += parseInt(data[i].value);
+								if (data[i].name == name) {
+									target = data[i].value;
+									}
 								}
-							}
-							return name + '   |   ' + (parseInt(target)/parseInt(total)*100).toFixed(2)
+							return name + '   |   ' + (parseInt(target)/parseInt(total)*100).toFixed(2)+'%'
 							},
 					},
 					color:['#ffb400','#00dfe6','#a9d341'],
 					series: [
 						{
-							name:'访问来源',
+							name:'',
 							type:'pie',
 							itemGap: 60,
 							// radius : '60%',
-							radius: ['40%', '60%'],
-							center: ['50%', '25%'],//饼图的位置 
+							radius: ['30%', '50%'],
+							center: ['20%', '50%'],//饼图的位置 
 							avoidLabelOverlap: false,
 							label: {
 								normal: {
@@ -100,7 +100,7 @@
 						},
 						{
 								type: 'liquidFill',// 水波图
-								center: ['50%', '80%'],//饼图的位置 
+								center: ['80%', '20%'],//饼图的位置 
 								data: [ //可以有多个水波
 								{
 										value: 0.5,//所占比例 0-1
@@ -110,14 +110,14 @@
 								}],
 								itemStyle: { color: "#fff" },//波线的阴影
 								backgroundStyle :{color:'#fff'},//球状的背景颜色
-								radius: '55%',//水波图的半径
+								radius: '40%',//水波图的半径
 								outline: {
 										show: false //true显示水波图上的文字
 								},
 								label: {
 										show: true, //不能对水波图设置事件
 										formatter: function (value) {
-											return '剩余凭租面积'+(value.value*100).toFixed(0)+"%";
+											return '剩余租赁面积'+(value.value*100).toFixed(0)+"%";
 										},
 										position: ['50%', '70%'],
 										textStyle: {
@@ -141,7 +141,7 @@
 			}
 		},
 		mounted(){
-			this.getlist(1)
+			// this.getlist(1)
 		// this.option.series[0].data=this.contrast;
 		},
 		methods: {
@@ -156,7 +156,7 @@
 				var target=0;
 				data.forEach((e, i, a)=> {
 					total += parseInt(e.num);
-					if (e.typeId==2) {
+					if (e.type=="剩余租赁面积") {
 						target = e.num;
 						
 					}
@@ -166,7 +166,10 @@
 					})
 				})
 				this.option.series[0].data=dataed;
-				this.option.series[1].data[0].value=parseInt(target)/parseInt(total)
+				
+				
+						
+				this.option.series[1].data[0].value=parseInt(target)/parseInt(total)//
 			}
 	
 		},

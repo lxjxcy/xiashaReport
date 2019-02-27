@@ -14,8 +14,8 @@
  		data() {
  			return {
  				id:"vacancy",
- 				width:"100%",
- 				height:"250px",
+ 				width:"355px",
+ 				height:"200px",
  				option:{
  					title : {
  						text: '空置面积占比分析',
@@ -76,7 +76,7 @@
  			}
  		},
  		mounted(){
- 			this.getlist(1)
+ 			// this.getlist(1)
  		
  		},
  		methods: {

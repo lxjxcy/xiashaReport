@@ -1,17 +1,23 @@
 <template>
 	<div class="entrepreneur_data">
-		<ul>
-			<li class="l" style="width:410px;">
-				<innovate></innovate>
-				<employees></employees>
-				<financing></financing>
-			</li>
-			<li class="l">
-				<scale></scale>
-				<electric></electric>
-				<plannedProject></plannedProject>
-			</li>
-		</ul>
+		<div style="display: flex;justify-content: flex-start;">
+			<numtype></numtype>
+			<pertype></pertype>
+			<electric></electric>		
+		</div>
+		<div style="display: flex;justify-content: flex-start;">
+			<businessOperation></businessOperation>
+			
+			<aptitude></aptitude>	
+			<financing></financing>
+		</div>
+		<div style="display: flex;justify-content: flex-start;">
+			<innovate></innovate>
+			<employees></employees>
+			<plannedProject></plannedProject>	
+		</div>
+		
+		
 	</div>
 </template>
 
@@ -21,7 +27,9 @@
 	import financing from "./financing.vue"//企业融资情况
 	import plannedProject from "./planned_project.vue"//国家计划
 	import businessOperation  from "./business_operation.vue"//企业经营
-	import scale from "./scale.vue"//规模分析
+	import numtype from "./numtype.vue"//规模分析
+	import pertype from "./pertype.vue"
+	import aptitude from "./aptitude.vue"
 	import electric from "./electric.vue"
 	export default {
 		name:"entrepreneur_data",
@@ -32,11 +40,20 @@
 			plannedProject,
 			electric,
 			businessOperation,
-			scale
+			aptitude,
+			numtype,
+			pertype
+			
+			
 		}
 	}
 </script>
 
-<style>
+<style scoped>
+	.entrepreneur_data{
+		width:1500px;
+		height: 700px;
+		/* background: #A2BE35; */
+	}
 
 </style>

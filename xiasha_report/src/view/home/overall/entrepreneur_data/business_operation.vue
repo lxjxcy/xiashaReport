@@ -10,8 +10,8 @@
 		data() {
 			return {
 				id:"business_operation",
-				width:"400px",
-				height:"250px",
+				width:"600px",
+				height:"230px",
 				xAxis:['第一季度','第二季度','第三季度','第四季度'],
 				clustering:[120, 132, 101, 134],
 				incubator:[220, 182, 191, 433],
@@ -72,13 +72,13 @@
 					yAxis: {
 						type: 'value',
 						splitLine: {
-							show: false
+							show: true
 						}, //去除网格线
 						axisLine: {
 							lineStyle: {
-								type: 'solid',
+								type: 'dashed',
 								color: '#30dbe3',
-								width: '0'
+								width: '0',
 							}
 						},
 					},
@@ -102,7 +102,7 @@
 // 					}
 // 			}
 		mounted(){
-			this.option.xAxis.data=this.xAxis;
+			// this.option.xAxis.data=this.xAxis;
 			this.getlist()
 			
 		},
@@ -113,14 +113,28 @@
 					var color=['#ec6d6f','#ff0001','#00e3d9'];
 					var type=['line','line','bar']
 					this.option.legend.color=color;
-						res.data.forEach((e, i, a)=> {
+					var quarters=[]
+					res.data.content[0].incomes.forEach((me,mi,ma)=>{
+						
+						quarters.push('第'+me.quarter+'季度')
+					})
+						res.data.content.forEach((e, i, a)=> {
 							this.option.legend.data[i]=e.manageType;	
 							var numdata=[]
-							var quarter=[]
-							e.content.forEach((me,mi,ma)=>{
-								numdata.push(me.num)
-								// quarter.push('第'+me.quarter+'季度')
+							e.incomes.forEach((me,mi,ma)=>{
+								if(e.manageType=="主营业务收入"){
+									numdata.push(me.businessIncome)
+								}else if(e.manageType=="企业税收"){
+									numdata.push(me.enterpriseTax)
+									
+								}else {
+									numdata.push(me.develoInvestment)
+									
+								}
+								
 							})
+							
+							
 							
 								list.push({
 										name:e.manageType,
@@ -140,7 +154,7 @@
 									
 								})
 						})
-						// this.option.xAxis.data=quarter;
+						 this.option.xAxis.data=quarters;
 						this.option.series=list
 				})
 				
@@ -150,6 +164,7 @@
 </script>
 <style scoped>
 	.business_operation{
+		/* border: 1px ; */
 		/* padding: 0 2%;
 		margin-right: 2% */
 		/* border-left: 2px solid #fff */

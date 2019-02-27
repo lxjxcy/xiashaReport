@@ -34,8 +34,8 @@ export default {
 		/* height:100%; */
 /* 		display: flex;
 		flex-direction:column;	 */
-		height:750px;
-		width:4700px;
+		height:700px;
+		width:4510px;
 		background: #000036;
 		overflow-y:hidden
 	}

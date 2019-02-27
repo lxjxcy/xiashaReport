@@ -12,8 +12,8 @@
 		data(){
 			return{
 				id:"financ",
-				width:"100%",
-				height:"250px",
+				width:"450px",
+				height:"230px",
 				option:{
 					title: {
 							text: '企业融资情况',
@@ -131,7 +131,7 @@
 
 <style scoped>
 .financing{
-	height:260px;
+	/* height:260px; */
 	/* padding: 2%; */
 }
 

@@ -14,11 +14,11 @@
 			return {
 				id:"rental_price",
 				width:"100%",
-				height:"250px",
+				height:"223px",
 				j:0,
 				option:{
 				     title: {
-						text: '租金收入月度趋势(万元)',
+						text: '租金收入月度趋势（万元）',
 						x:'left',
 						textStyle: {
 							fontSize: 18,
@@ -56,7 +56,7 @@
 					xAxis: {
 						type: 'category',
 						boundaryGap: false,
-						data: this.xAxis,
+						data: [],
 						splitLine: {
 							show: false
 						}, //去除网格线
@@ -101,16 +101,16 @@
 						this.option.legend.color=color;
 						var selecteddata=res.data
 							res.data.forEach((e, i, a)=> {
-								this.option.legend.data[i]=e.communityName;	
+								this.option.legend.data[i]=e.group;	
 								var numdata=[]
 								var month=[]
 								e.content.forEach((me,mi,ma)=>{
 									numdata.push(me.num)
 									month.push(me.month+'月')
 								})
-								this.option.xAxis.data=month;
+								this.option.xAxis.data=month;								
 									list.push({
-											name:e.communityName,
+											name:e.group,
 											type:'line',
 											 // symbol: "none",
 											// stack: '总量',
@@ -159,7 +159,8 @@
 </script>
 <style scoped>
 	.rental_price{
-		height:260px;
+		height:233px;
+		/* height:260px; */
 		/* border-right:2px solid #fff;
 		border-bottom:2px solid #fff; */
 		/* padding: 2% 0; */

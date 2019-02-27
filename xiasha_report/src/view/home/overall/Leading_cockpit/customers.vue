@@ -81,22 +81,36 @@
 		},
 		methods: {
 			getlist(){
-				this.$api.getCompanyNumber().then(res=>{
+				this.$api.getCustomerNumber().then(res=>{
 					var list=[]
 					var color=['#be5769','#666666','#00fff9'];
 					var type=["line","line","bar"]
 					this.option.legend.color=color;
 						res.data.forEach((e, i, a)=> {
-							this.option.legend.data[i]=e.clientType;
+							this.option.legend.data[i]=e.group;
 							var numdata=[]
 							var month=[]
+							
+							if(e.group=="进驻客户"){
+								var len=e.content.length-1;
+								var total=e.content[len].total;
+								console.log(total.length)
+								
+								this.option.title.text="进驻客户数量"+total;
+								
+							}
+							
+							
+							// 
 							e.content.forEach((me,mi,ma)=>{
+								
 								numdata.push(me.num)
 								month.push(me.month+'月')
 							})
-							this.option.xAxis.data=month;
+							this.option.xAxis.data=["1月",'2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月']
+							// this.option.xAxis.data=month;
 								list.push({
-										name:e.clientType,
+										name:e.group,
 										type:type[i],
 										// stack: '总量',
 										x:20,
@@ -133,7 +147,7 @@
 
 <style scoped>
 	.customers{
-		width:600px;
+		/* width:600px; */
 		height:310px;
 		/* padding: 2% 0; */
 	}

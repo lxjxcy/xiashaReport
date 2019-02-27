@@ -10,7 +10,8 @@
 		name:"workpiece",
 		 props: {
 			percent: {
-				type: Number
+				type: String,
+				required:true,
 			 }
     },
 		
@@ -153,7 +154,7 @@
 		},
 		mounted(){
 			console.log(this.percent)
-			this.option.series[0].data[0].value=this.percent
+			this.option.series[0].data[0].value=(Number(this.percent)*100).toFixed(0)
 			
 			
 		},

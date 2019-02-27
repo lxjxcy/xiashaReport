@@ -3,10 +3,10 @@
 		<div class="all_price">
 				<h2>年度租金收入</h2>
 				<p class="p1">￥{{total}}</p>
-				<ul>
+				<ul class="echartall">
 					<li v-for="item in content">
 						<p class="p2">{{item.communityName}}</p>
-						<p>{{item.num}}元</p>
+						<p>{{item.num.toFixed(2)}}万元</p>
 					</li>
 				</ul>
 				<div class="time">
@@ -48,9 +48,13 @@
 		methods: {
 			getlist() {
 				this.$api.getRentYear().then(res=>{
-					this.total=res.data.total;
-					this.content=res.data.content;
-					this.percent=parseInt(res.data.percent*100)
+					this.total=(res.data[0].total).toFixed(2)+"万元";
+					// this.content=res.data.content;
+					this.percent=res.data[0].percent
+				})
+				this.$api.getRentCompare().then(res=>{
+					this.content=res.data
+					
 				})
 			}
 		},
@@ -60,20 +64,21 @@
 <style scoped>
 	.rental_year{
 		/* border-right: 2px solid #fff; */
-		width:700px;
-		height:100%;
+		width:600px;
+		height:200px;
 		
 	}
 	
 	
 	.all_price{
-		padding: 2%;
+		/* padding: 2%; */
 		position: relative;
 		color:#fff;
 	}
 	.p1{
 		line-height: 70px;
 		font-size: 40px;
+		
 		color: #fff;
 		font-weight: 400;
 		text-align: center;
@@ -81,6 +86,7 @@
 	ul{
 		display: flex;
 		margin-top: 60px;
+		padding:15px 0;
 		justify-content: space-around;
 	}
 	li p{
@@ -96,8 +102,8 @@
 	}
 	.time{
 		position: absolute;
-		top:5px;
-		right:5px;
+		top:-15px;
+		right:13px;
 	}
 
 </style>
