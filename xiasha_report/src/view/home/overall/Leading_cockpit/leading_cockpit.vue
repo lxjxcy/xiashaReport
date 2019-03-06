@@ -45,6 +45,7 @@
 	
 		.leading_cockpit{
 			width:1500px;
+			height:700px
 			/* background: #999999; */
 		}
 	

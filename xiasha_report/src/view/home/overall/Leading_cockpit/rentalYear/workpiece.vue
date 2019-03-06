@@ -8,18 +8,19 @@
 <script>
 	export default {
 		name:"workpiece",
-		 props: {
-			percent: {
-				type: String,
-				required:true,
-			 }
-    },
+// 		 props: {
+// 			percent: {
+// 				type: String,
+// 				required:true,
+// 			 }
+    // },
 		
 		data(){
 			return{
+				percent:'',
 				id:"workpiece",
-				width:"200px",
-				height:"200px",
+				width:"180px",
+				height:"180px",
 				option:{
 					tooltip: {				// 本系列特定的 tooltip 设定。	
 						show: true,
@@ -153,13 +154,14 @@
 			}
 		},
 		mounted(){
-			console.log(this.percent)
-			this.option.series[0].data[0].value=(Number(this.percent)*100).toFixed(0)
+			
 			
 			
 		},
 		methods:{
-
+			getpercent(e){
+				this.option.series[0].data[0].value=(Number(e)*100).toFixed(0)
+			}
 		}
 		
 	}

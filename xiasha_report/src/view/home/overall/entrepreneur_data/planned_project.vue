@@ -116,9 +116,9 @@
 		width: 250px;
 		text-align: center;
 		overflow: hidden;
-		line-height: 20px;
+		/* line-height: 20px;
 		text-overflow: ellipsis;
-		white-space: nowrap
+		white-space: nowrap */
 	}
 	.tab1{
 		padding: 1%;

@@ -72,31 +72,31 @@ export default {
 			 that.chart.resize()
 		 })
 		 //tootip循环切换
-		 if(id=="employees"){
-			 	var index = 0; //播放所在下标,使得tootip每隔三秒自动显示
-			 	var mTime = setInterval(()=> {
-			 		that.chart.dispatchAction({
-			 			type: 'showTip',//提示
-			 			seriesIndex: 0,
-			 			dataIndex: index
-			 		});
-			 
-			 			that.chart.dispatchAction({
-			 					type: 'highlight',//高亮
-			 					seriesIndex: 0,
-			 					dataIndex: index
-			 			});
-			 			that.chart.dispatchAction({
-			 				type: 'downplay',
-			 				seriesIndex: 0,
-			 				dataIndex: index-1
-			 			});
-			 			index++;
-			 			if (index > 3) {
-			 					index = 0;
-			 			}
-			 	}, 1000);
-		 }
+// 		 if(id=="employees"){
+// 			 	var index = 0; //播放所在下标,使得tootip每隔三秒自动显示
+// 			 	var mTime = setInterval(()=> {
+// 			 		that.chart.dispatchAction({
+// 			 			type: 'showTip',//提示
+// 			 			seriesIndex: 0,
+// 			 			dataIndex: index
+// 			 		});
+// 			 
+// 			 			that.chart.dispatchAction({
+// 			 					type: 'highlight',//高亮
+// 			 					seriesIndex: 0,
+// 			 					dataIndex: index
+// 			 			});
+// 			 			that.chart.dispatchAction({
+// 			 				type: 'downplay',
+// 			 				seriesIndex: 0,
+// 			 				dataIndex: index-1
+// 			 			});
+// 			 			index++;
+// 			 			if (index > 3) {
+// 			 					index = 0;
+// 			 			}
+// 			 	}, 1000);
+// 		 }
 	 }
 
  }

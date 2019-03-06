@@ -59,7 +59,7 @@ export default {
 		return get('http://101.37.124.231:8081/screen/company/topEmployeesNum?year='+util.getYear()+'&month='+util.getMonth())//企业员工人数占比top5
 	},
 	getCompanyElectric(params) {
-		return get('http://122.224.207.90:8885/report/company/electric', params)//企业用电量
+		return get('http://101.71.143.135:8888/report/company/electric', params)//企业用电量
 	},
 	getCompanyQualification(params) {
 		return get('http://101.37.124.231:8081/screen/company/qualification?year='+util.getYear()+'&month='+util.getMonth())//企业资质

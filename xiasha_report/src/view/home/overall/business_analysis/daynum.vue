@@ -140,17 +140,40 @@
   							radius: ['48%', '60%'],
   							center: ['50%', '60%'],//饼图的位置 
   							avoidLabelOverlap: false,
-  							label: {
-  								formatter:(params)=>{
-  									var name=params.name
-  									var value=params.percent+"%";
-  									return name+"（"+value+" ）"
-  								},
-  								color:"#00fff9",
-  									emphasis: {
-  											show: true
-  									}
+  						label: {
+  							formatter:(params)=>{
+  								var name=params.name
+  								var value=params.percent+"%";
+  								// return name+"\r\n"+value
+  									var arr = [
+  									'{a|'+name+'}',
+  									'{b|（'+value+'）}',
+  								]
+  								return arr.join('\n')
   							},
+  							textStyle:{
+  								rich:{
+  									a:{
+  										fontSize:12,
+  										verticalAlign:'top',
+  										align:'left',
+  									},
+  									b:{
+  										fontSize:12,
+  										align:'left',
+  										color:"#fff",
+  									}
+  								}
+  							},
+  							
+  							
+  							
+  							
+  							color:"#fff",
+  								emphasis: {
+  										show: true
+  								}
+  						},
   									labelLine:{  
   										normal:{  
   												length:10,

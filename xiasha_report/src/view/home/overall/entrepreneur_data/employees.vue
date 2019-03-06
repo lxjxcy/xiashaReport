@@ -8,7 +8,7 @@
 </template>
 <script>	
 	export default {
-		name:"employees",
+		name:"employ",
 		data() {
 			return {
 				id:"employees",
@@ -34,9 +34,9 @@
 					},
 					legend: {
 						orient: 'vertical',
-						right: '10px',
+						right: '5px',
 						icon : 'circle',
-						top:'20%',
+						top:'35%',
 						textStyle:{
 						color:['#fff'],
 					    },
@@ -60,8 +60,8 @@
 						{
 							name: '',
 							type: 'pie',
-							radius: ['0%', '60%'],
-							center: ['28%', '60%'],//饼图的位置 
+							radius: ['0%', '50%'],
+							center: ['20%', '60%'],//饼图的位置 
 							data:[],
 							 textStyle:{//图例文字的样式
 								color:'#fff',
@@ -98,7 +98,7 @@
 			getlist(){
 				this.$api.getCompanynmployeesNumn().then(res=>{
 					var data=[];
-					this.option.title.text='企业人数'+res.data.total+'人';
+				
 					var arr=res.data;
 					arr.forEach((e, i, a)=> {
 											
@@ -134,7 +134,11 @@
 							})
 						}
 					})
-
+					var  total=0;
+						data.forEach((e,i,a)=>{
+							total += parseInt(e.value);
+						})
+						this.option.title.text='企业人数'+total+'人';
 					this.option.series[0].data=data
 				})
 			}

@@ -84,8 +84,8 @@
 				this.$api.getcomeNumber(id).then(res=>{
 					
 					var list=[]
-					var color=['#be5769','#666666','#00fff9'];
-					var type=["line","line","bar"]
+					var color=['#00fff9','#be5769','#666666',];
+					var type=["bar","line","line",]
 					this.option.legend.color=color;
 						res.data.forEach((e, i, a)=> {
 							this.option.legend.data[i]=e.group;

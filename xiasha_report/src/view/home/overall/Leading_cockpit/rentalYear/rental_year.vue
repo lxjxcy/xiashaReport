@@ -3,14 +3,23 @@
 		<div class="all_price">
 				<h2>年度租金收入</h2>
 				<p class="p1">￥{{total}}</p>
-				<ul class="echartall">
+
+				<!-- <ul class="echartall">
 					<li v-for="item in content">
 						<p class="p2">{{item.communityName}}</p>
 						<p>{{item.num.toFixed(2)}}万元</p>
 					</li>
-				</ul>
+				</ul> -->
+				<vue-seamless-scroll :data="content" :class-option="optionLeft" class="seamless-warp2">
+					<ul class="item">
+						<li v-for="item in content" >
+							<p class="p2">{{item.communityName}}</p>
+							<p>{{item.nums}}</p>
+						</li>
+					</ul>
+				</vue-seamless-scroll>
 				<div class="time">
-					<workpiece :percent="percent"></workpiece>
+					<workpiece ref="workChild"></workpiece>
 				</div>
 				<div>
 					<xiashaMap></xiashaMap>
@@ -42,6 +51,14 @@
 				percent:"",
 			}
 		},
+		computed: {
+			optionLeft () {
+				return {
+					direction: 2,
+					limitMoveNum: 2
+				}
+			}
+		},
 		mounted(){
 			this.getlist()
 		},
@@ -51,9 +68,16 @@
 					this.total=(res.data[0].total).toFixed(2)+"万元";
 					// this.content=res.data.content;
 					this.percent=res.data[0].percent
+					this.$refs.workChild.getpercent(this.percent)
 				})
 				this.$api.getRentCompare().then(res=>{
+					var content=res.data;
+					content.forEach((e,i,a)=>{
+						a[i]['nums']=(e.num).toFixed(2)+"万元"
+						// a['areas'][i]=				
+					})
 					this.content=res.data
+					
 					
 				})
 			}
@@ -67,6 +91,23 @@
 		width:600px;
 		height:200px;
 		
+	}
+	.seamless-warp2 {
+					overflow: hidden;
+					height: 150px;
+					width: 600px;
+				
+		}
+		.seamless-warp2 ul{
+			width: 600px;
+			margin-top: 60px;
+	
+			
+		}
+	.seamless-warp2 .item li{
+		float: left;
+		margin-right: 10px;
+		height:150px;
 	}
 	
 	

@@ -54,7 +54,7 @@
 							lineStyle: {
 								type: 'solid',
 								color: '#30dbe3',
-								width: '1'
+								width: '0'
 							}
 						},
 					},

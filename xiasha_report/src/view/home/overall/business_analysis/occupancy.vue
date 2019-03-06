@@ -12,6 +12,7 @@ import echarts from "echarts";
 				id:"occupancys",
 				hackReset:true,
 				width:"850px",
+				init:"",
 				height:"200px",
 				
 				option:{
@@ -62,15 +63,46 @@ import echarts from "echarts";
 			// this.getlist(1)
 		},
 		methods: {
-			getlist(id){
-				this.$api.getReaBuilding(id).then(res=>{
-					this.savedata(res.data)
-					this.hackReset = false
-						this.$nextTick(() => {
-						this.hackReset = true
-					})
-				})
-			},
+						clear(){
+							window.clearInterval(this.init)
+						},
+						getlist(id){
+							this.clear()	
+							this.$api.getReaBuilding(id).then(res=>{
+								this.hackReset = false
+									this.$nextTick(() => {
+									this.hackReset = true
+								})
+								// if(res.data.length/6)
+								var arr=[]
+								var len=res.data.length/6;
+								if(len<=1){
+									this.savedata(res.data)
+								
+									return;
+								}
+							
+								for(var i=0;i<len;i++){
+									var list=[]
+									 list.push(res.data.slice(i*6,(i+1)*6))
+									 arr.push(list)
+								}
+								console.log(arr)
+								this.savedata(arr[0][0])				
+									var index=0;
+								this.init=window.setInterval(()=>{
+									index++;								
+									if(index==arr.length){
+										index=0
+									}
+									this.hackReset = false
+										this.$nextTick(() => {
+										this.hackReset = true
+									})
+									this.savedata(arr[index][0])															
+								},3000)
+							})
+						},
 			
 			savedata(data){
 				var needdata=[]
@@ -114,7 +146,7 @@ import echarts from "echarts";
                     }
                  },
                 {
-                    value: 100-(e.percent*100).toFixed(0)/100,
+                    value: 100-(e.rentalRate*100).toFixed(0)/100,
                     name: '',
 									itemStyle: {
 			                normal: {

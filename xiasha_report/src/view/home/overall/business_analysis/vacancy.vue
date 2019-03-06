@@ -52,8 +52,31 @@
  								formatter:(params)=>{
  									var name=params.name
  									var value=params.percent+"%";
- 									return name+value
+ 									// return name+"\r\n"+value
+ 										var arr = [
+ 										'{a|'+name+'}',
+ 										'{b|（'+value+'）}',
+ 									]
+ 									return arr.join('\n\n')
  								},
+ 								textStyle:{
+ 									rich:{
+ 										a:{
+ 											fontSize:12,
+ 											verticalAlign:'top',
+ 											align:'left',
+ 										},
+ 										b:{
+ 											fontSize:12,
+ 											align:'left',
+ 											color:"#fff",
+ 										}
+ 									}
+ 								},
+ 								
+ 								
+ 								
+ 								
  								color:"#fff",
  									emphasis: {
  											show: true

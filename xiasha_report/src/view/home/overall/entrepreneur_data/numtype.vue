@@ -45,13 +45,47 @@
 							radius : [25, 70],
 							center : ['50%', '50%'],
 							roseType : 'radius',
+// 							label: {
+// 								 formatter:(params)=>{
+// 									 var name=params.name
+// 									 var value=params.percent+"%";
+// 									 return name+value
+// 								 },
+// 								 color:"#fff",
+// 									emphasis: {
+// 											show: true
+// 									}
+// 							},
 							label: {
-								 formatter:(params)=>{
-									 var name=params.name
-									 var value=params.percent+"%";
-									 return name+value
-								 },
-								 color:"#fff",
+								formatter:(params)=>{
+									var name=params.name
+									var value=params.percent+"%";
+									// return name+"\r\n"+value
+										var arr = [
+										'{a|'+name+'}',
+										'{b|（'+value+'）}',
+									]
+									return arr.join('\n')
+								},
+								textStyle:{
+									rich:{
+										a:{
+											fontSize:12,
+											verticalAlign:'top',
+											align:'left',
+										},
+										b:{
+											fontSize:12,
+											align:'left',
+											color:"#fff",
+										}
+									}
+								},
+								
+								
+								
+								
+								color:"#fff",
 									emphasis: {
 											show: true
 									}

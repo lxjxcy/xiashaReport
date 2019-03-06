@@ -17,7 +17,7 @@
 					height:"210px",
 				option:{
 						title : {
-							text: '企业创新',
+							text: '知识产权',
 							x:'left',
 							textStyle: {
 								fontSize: 20,
@@ -53,7 +53,7 @@
 										target = data[i].value;
 										}
 									}
-									return name + '   |   ' + (parseInt(target)/parseInt(total)*100).toFixed(2) + '%'+ '   |   '+target+'件';
+									return name + '   |   ' + (parseInt(target)/parseInt(total)*100).toFixed(2) + '%';
 								},
 						},
 						color:['#00a2ff','#ff5872','#00cece','#00ce79','#ffd139','#9f5ce2'],
@@ -76,9 +76,18 @@
 										 	color:"#fff",
 										 },
 										position: 'center', 
-										  formatter:function (argument) {
+										  formatter:(argument)=> {
 												var html;
-												html='知识产权\r\n\r\n'+'123,224件';
+												// console.log(this)
+												
+												// var total=0;
+												// var data=this.option.series[0].data
+// 												for (var i = 0;i < data.length; i++) {
+												// total += parseInt(argument.data.value);
+												// debugger
+// 						
+// 												}
+												html='知识产权\r\n\r\n';
 												return html;
 											},　
 									},
@@ -118,6 +127,11 @@
 									name:e.type
 								})
 							})
+							var  total=0;
+								data.forEach((e,i,a)=>{
+									total += parseInt(e.value);
+								})
+								this.option.title.text='知识产权'+total+'件';
 							this.option.series[0].data=data
 						})
 					}

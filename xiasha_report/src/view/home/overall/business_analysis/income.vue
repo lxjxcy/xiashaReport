@@ -8,7 +8,7 @@
 	
 </template>
 <script>	
-
+import util from "../../../../common/js/tool.js"
 	export default {
 		name:"income",
 
@@ -17,6 +17,7 @@
 			id:"income",
 			width:"580px",
 			height:"230px",
+			init:"",
 			j:0,
 			
 			option:{
@@ -93,16 +94,46 @@
 			this.moveLine()
 		},
 		methods: {
+			clear(){
+				window.clearInterval(this.init)
+			},
 			 getlist(id){
+				 this.clear()
 				 this.$api.getBuilding(id).then(res=>{
 					 this.savedata(res.data)
+					 var arr=[]
+						var len=res.data.length;						
+						if(len<=1){
+							this.savedata(res.data)						
+							return;
+						}
+						for(var i=0;i<len;i++){
+							var list=[]
+							 list.push(res.data.slice(i,i+1))
+							 arr.push(list)
+						}						
+						this.savedata(arr[0][0])
+							var index=0;							
+						this.init=window.setInterval(()=>{
+							index++;
+							if(index==res.data.length){
+								index=0
+							}
+
+							this.hackReset = false
+								this.$nextTick(() => {
+								this.hackReset = true
+							})
+							// console.log(arr[index][0])
+							this.savedata(arr[index][0])		
+														
+						},2000)
 					 // this.$store.commit('saveIncome',res.data)
 				 })			
-			},
-			
+			},			
 			savedata(data){
 				var list=[]
-				var color=['#ff101c','#ff9100','#d03275','#00aad4',"#00bb6e",'#b4b32b']
+				var color=util.randomColor()
 				this.option.legend.color=color;
 				data.forEach((e, i, a)=> {
 					this.option.legend.data[i]=e.group;	
@@ -124,9 +155,9 @@
 								itemStyle: {//直线颜色
 									normal: {
 										
-										color: color[i],
+										color: color,
 										lineStyle: {
-											color: color[i],
+											color: color,
 											width:5
 										}
 									}
