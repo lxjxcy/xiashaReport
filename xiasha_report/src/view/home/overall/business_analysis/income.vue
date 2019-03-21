@@ -1,13 +1,10 @@
 <template>
-	<div>
-		<div class="income">
-			<Charts :id="id" class="echartall" :option="option" :height="height" :width="width"/>
-		</div>
 	
-	</div>
+			<Charts :id="id" v-if="hackReset" class="echartall" :option="option" :height="height" :width="width"/>
 	
 </template>
 <script>	
+import hackReset from "../../../../mixins/hackReset.js"
 import util from "../../../../common/js/tool.js"
 	export default {
 		name:"income",
@@ -15,8 +12,8 @@ import util from "../../../../common/js/tool.js"
 		data() {
 			return {
 			id:"income",
-			width:"580px",
-			height:"230px",
+			width:"100%",
+			height:"100%",
 			init:"",
 			j:0,
 			
@@ -24,14 +21,7 @@ import util from "../../../../common/js/tool.js"
 				     title: {
 						text: '租金收入（万元）',
 						x:'left',
-						textStyle: {//主标题文本样式{"fontSize": 18,"fontWeight": "bolder","color": "#333"}
-							// fontFamily: 'Arial, Verdana, sans...',
-							fontSize: 18,
-							backgroundColor:"#f0f",
-							fontStyle: 'normal',
-							fontWeight: 'normal',
-							color:"#fff"
-						},
+						textStyle: this.$store.state.textStyle,
 						
 					},
 					legend: {
@@ -93,13 +83,22 @@ import util from "../../../../common/js/tool.js"
 			// this.getlist(1)
 			this.moveLine()
 		},
+		mixins: [hackReset],
 		methods: {
 			clear(){
 				window.clearInterval(this.init)
 			},
-			 getlist(id){
+			 getlist(version,id,year){
+				this.hackReset = false
+					this.$nextTick(() => {
+					this.hackReset = true
+			})
+
 				 this.clear()
-				 this.$api.getBuilding(id).then(res=>{
+				 this.$api.getBuilding(version,id,year).then(res=>{
+					 if(res.data.length==0){
+					 	return
+					 }
 					 this.savedata(res.data)
 					 var arr=[]
 						var len=res.data.length;						
@@ -166,7 +165,7 @@ import util from "../../../../common/js/tool.js"
 						})
 				})
 				this.option.series=list;
-				console.log(list)
+				// console.log(list)
 			},
 			moveLine(){
 				this.timer = setTimeout(()=>{

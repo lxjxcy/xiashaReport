@@ -1,9 +1,5 @@
 <template>
-	<div>
-		<div class="price_contrast">
-			<Charts :id="id" class="echartall" :option="option" :height="height" :width="width"/>
-		</div>
-	</div>	
+			<Charts :id="id" v-if="hackReset" class="echartall" :option="option" :height="height" :width="width"/>	
 </template>
 <script>	
 	export default {
@@ -12,24 +8,21 @@
 			return {
 				id:"price_contrast",
 				width:"100%",
-				height:"223px",
+				height:"100%",
+				hackReset:true,
+				number:22,
 				option:{
 					title : {
 						text: '租金收入比对（万元）',
 						x:'left',
-						textStyle: {//主标题文本样式{"fontSize": 18,"fontWeight": "bolder","color": "#333"}
-							// fontFamily: 'Arial, Verdana, sans...',
-							fontSize: 20,
-							backgroundColor:"#f0f",
-							fontStyle: 'normal',
-							fontWeight: 'normal',
-							color:"#fff"
-						},
+						textStyle: this.$store.state.textStyle,
 					},
 					grid: {
-						left: '0',
-						top:"2%"
-						
+						left: '3%',
+						right: '4%',
+						top:"35%",
+						bottom: '3%',
+						containLabel: true,
 						
 					},
 					tooltip: {
@@ -38,7 +31,7 @@
 					},
 					legend: {
 						orient: 'vertical',
-						right: '2%',
+						left: '45%',
 						icon : 'circle',
 						top:'30%',
 						textStyle:{
@@ -65,7 +58,7 @@
 							itemGap: 60,
 							
 							// radius : '60%',
-							radius: ['40%', '70%'],
+							radius: ['40%', '60%'],
 							center: ['20%', '60%'],//饼图的位置 
 							avoidLabelOverlap: false,
 							label: {
@@ -99,12 +92,12 @@
 			}
 		},
 		mounted(){
-			this.getlist()
+			// this.getList()
 		
 		},
 		methods: {
 			lengeds(name){
-				console.log(name)
+				// console.log(name)
 				var data=this.option.series[0].data
 				var total = 0;
 				var target;
@@ -116,17 +109,23 @@
 				}
 				return name + '   |   ' + ((target/total)*100).toFixed(2) + '%'+ '   |   ￥'+target;
 			},
-			getlist(){
-				this.$api.getRentCompare().then(res=>{
-					var data=[];
-					
+			getList(version,year,month){
+				this.hackReset = false
+					this.$nextTick(() => {
+					this.hackReset = true
+				})
+				this.$api.getYearMonthReport(version,year,month,this.number).then(res=>{
+					if(res.data.length==0){
+						return
+					}
+					var data=[];					
 					res.data.forEach((e, i, a)=> {
 						data.push({
 							value:e.num,
 							name:e.communityName
 						})
 					})
-					console.log(data)
+					// console.log(data)
 					this.option.series[0].data=data
 					
 				})
@@ -137,7 +136,7 @@
 </script>
 <style scoped>
 .price_contrast{
-	height:233px;
+	height:33%;
 }
 	
 </style>

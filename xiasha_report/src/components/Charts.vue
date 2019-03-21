@@ -1,5 +1,5 @@
 <template>
-	<div>
+	<div class="container">
 		<div :id="id" :option="option" :style="style"></div>
 	</div>
 	
@@ -102,3 +102,11 @@ export default {
  }
 };
 </script>
+<style scoped>
+.container{
+	height:100%;
+	width:100%;
+	/* margin:5px; */
+
+}
+</style>

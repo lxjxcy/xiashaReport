@@ -1,22 +1,17 @@
 <template>
 	<!-- <div class="planned_project"> -->
 		
-		<div class="tab1 echartall">
-			<table class="tha">
-				<tr>
-					<th>国家级科技计划项目top10</th>
-					<th>数量</th>
-				</tr> 
-				
-			</table>
-		<vue-seamless-scroll :data="list" class="seamless-warp">
-			<table class="item">
-				<tr v-for="(item,index) in list">
-					<td class="companyName" v-text="item.type"></td>
-					<td class="communityName" style="color: #00d1d9" v-text="item.num"></td>
-				</tr>
-			</table>
-			</vue-seamless-scroll>
+		
+		<div  class="tab2 echartall plann-person">
+			<vue-seamless-scroll :data="list2" class="seamless-warp">
+				<table class="item">
+					<tr v-for="(item,index) in list2">
+						<td >{{index+1}}</td>
+						<td class="companyName" v-text="item.type"></td>
+						<td class="communityName" style="color: #00d1d9" v-text="item.num"></td>
+					</tr>
+				</table>
+				</vue-seamless-scroll>
 		</div>
 	<!-- </div> -->
 </template>
@@ -25,21 +20,24 @@
 		name:"planned_project",
 		data(){
 			return{
-				list:[],
 				
+				list2:[],
+				number:9,
 			}
 		},
 		mounted(){
-			// this.getList()
 		
+			// this.getList()
 		},
 		methods: {
+
+			
 			getList(version,year,month){
-				this.$api.getNationalProgram(version,year,month).then(res=>{
+				this.$api.getYearMonthReport(version,year,month,this.number).then(res=>{
 					if(res.data.length==0){
 						return
 					}
-					this.list=res.data
+					this.list2=res.data
 				})
 			},
 			//滚动
@@ -61,31 +59,24 @@
 
 <style scoped>
 	.seamless-warp {
-		height:80%;
+		height: 95%;
+
 		overflow: hidden;
 		line-height: 20px;
 		width:100%;
 	}
-	.tab1 table{
+	.planned_project{
+		/* border-left: 2px solid #fff; */
+		display: flex;
 		width:100%;
+		/* margin-top: 1%; */
+		justify-content: space-between;
 	}
-	.tab1 .tha tr th{
-		width: 50%;
-		text-align: center;
-		line-height: 0.16rem;
-		font-size: 0.16rem;
-		color:#ffb400;
-	}
-	.tab1 tr td{
-		width: 50%;
-		text-align: center;
-		font-size: 0.14rem;
-		line-height: 0.28rem;
-	}
-	.tab1{
-		/* padding: 1%; */
+
+	.tab2{
+		padding: 1%;
 		width:100%;
-		height:100%;		
+		height:100%;
 	}
 
 </style>

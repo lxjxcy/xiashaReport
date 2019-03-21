@@ -1,7 +1,7 @@
 <template>
-		<div class="business_operation">
-			<Charts :id="id" class="echartall" :option="option" :height="height" :width="width"/>
-		</div>		
+		<!-- <div class="business_operation"> -->
+			<Charts :id="id" v-if="hackReset" class="echartall" :option="option" :height="height" :width="width"/>
+		<!-- </div>		 -->
 </template>
 <script>
 	import echarts from "echarts"
@@ -9,9 +9,10 @@
 		name:"business_operation",
 		data() {
 			return {
+				hackReset:true,
 				id:"business_operation",
-				width:"600px",
-				height:"230px",
+				width:"100%",
+				height:"100%",
 				xAxis:['第一季度','第二季度','第三季度','第四季度'],
 				clustering:[120, 132, 101, 134],
 				incubator:[220, 182, 191, 433],
@@ -25,14 +26,7 @@
 					 title: {
 						text: '企业经营',
 						x:'left',
-						textStyle: {//主标题文本样式{"fontSize": 18,"fontWeight": "bolder","color": "#333"}
-							// fontFamily: 'Arial, Verdana, sans...',
-							fontSize: 18,
-							backgroundColor:"#f0f",
-							fontStyle: 'normal',
-							fontWeight: 'normal',
-							color:"#fff"
-						},
+						textStyle: this.$store.state.textStyle,
 						
 					},
 					legend: {
@@ -47,6 +41,7 @@
 					grid: {
 						left: '3%',
 						right: '4%',
+						top: '20%',
 						bottom: '3%',
 						containLabel: true
 					},
@@ -87,28 +82,22 @@
 			
 			}
 		},
-// 		itemStyle: {
-// 					normal: {
-// 							color: new echarts.graphic.LinearGradient(0, 1, 0, 0, [{
-// 									offset: 0,
-// 									color: "red" // 0% 处的颜色
-// 							}, {
-// 									offset: 0.6,
-// 									color: "blue" // 60% 处的颜色
-// 							}, {
-// 									offset: 1,
-// 									color: "yellow" // 100% 处的颜色
-// 							}], false)
-// 					}
-// 			}
+
 		mounted(){
-			// this.option.xAxis.data=this.xAxis;
-			this.getlist()
+			
+			// this.getList()
 			
 		},
 		methods: {
-			getlist(){
-				this.$api.getCompanynManage().then(res=>{
+			getList(version,year,month){
+				this.hackReset = false
+					this.$nextTick(() => {
+					this.hackReset = true
+				})
+				this.$api.getCompanynManage(version,year,month).then(res=>{
+					if(res.data.length==0){
+						return
+					}
 					var list=[]
 					var color=['#ec6d6f','#ff0001','#00e3d9'];
 					var type=['line','line','bar']

@@ -1,7 +1,7 @@
 <template>
-	<div class="workpiece">
-		<Charts :id="id"  :option="option" :height="height" :width="width"/>
-	</div>
+
+		<Charts :id="id" v-if="hackReset"  :option="option" :height="height" :width="width"/>
+	
 	
 </template>
 
@@ -19,8 +19,9 @@
 			return{
 				percent:'',
 				id:"workpiece",
-				width:"180px",
-				height:"180px",
+				hackReset:true,
+				width:"100%",
+				height:"100%",
 				option:{
 					tooltip: {				// 本系列特定的 tooltip 设定。	
 						show: true,
@@ -38,7 +39,7 @@
 						{
 	            name: "单仪表盘示例",		// 系列名称,用于tooltip的显示，legend 的图例筛选，在 setOption 更新数据和配置项时用于指定对应的系列。
 	            type: "gauge",			// 系列类型
-	            radius:	"80%",			// 参数:number, string。 仪表盘半径,默认 75% ，可以是相对于容器高宽中较小的一项的一半的百分比，也可以是绝对的数值。
+	            radius:	"100%",			// 参数:number, string。 仪表盘半径,默认 75% ，可以是相对于容器高宽中较小的一项的一半的百分比，也可以是绝对的数值。
 	            center: ["50%", "55%"],	// 仪表盘位置(圆心坐标)
 	            startAngle: 225,		// 仪表盘起始角度,默认 225。圆心 正右手侧为0度，正上方为90度，正左手侧为180度。
 	            endAngle: -45,			// 仪表盘结束角度,默认 -45
@@ -52,18 +53,18 @@
 	            	lineStyle: {			// 仪表盘轴线样式。
 	            		color: [[0.2, "rgba(255,0,0,0.8)"], [0.8, "rgba(0,255,255,0.8)"], [1, "rgba(0,255,0,0.8)"]], 	//仪表盘的轴线可以被分成不同颜色的多段。每段的  结束位置(范围是[0,1]) 和  颜色  可以通过一个数组来表示。默认取值：[[0.2, '#91c7ae'], [0.8, '#63869e'], [1, '#c23531']]
 	            		opacity: 1,					//图形透明度。支持从 0 到 1 的数字，为 0 时不绘制该图形。
-	            		width: 15,					//轴线宽度,默认 30。
+	            		width: 9,					//轴线宽度,默认 30。
 	            		shadowBlur: 20,				//(发光效果)图形阴影的模糊大小。该属性配合 shadowColor,shadowOffsetX, shadowOffsetY 一起设置图形的阴影效果。 
 	            		shadowColor: "#fff",		//阴影颜色。支持的格式同color。
 	            	}
 	            },  
 	            splitLine: {			// 分隔线样式。
 	            	show: true,				// 是否显示分隔线,默认 true。
-	            	length:15,				// 分隔线线长。支持相对半径的百分比,默认 30。
+	            	length:8,				// 分隔线线长。支持相对半径的百分比,默认 30。
 	            	lineStyle: {			// 分隔线样式。
 			            color: "#eee",				//线的颜色,默认 #eee。
 			            opacity: 1,					//图形透明度。支持从 0 到 1 的数字，为 0 时不绘制该图形。
-			            width: 2,					//线度,默认 2。
+			            width: 1,					//线度,默认 2。
 			            type: "solid",				//线的类型,默认 solid。 此外还有 dashed,dotted
 			            shadowBlur: 10,				//(发光效果)图形阴影的模糊大小。该属性配合 shadowColor,shadowOffsetX, shadowOffsetY 一起设置图形的阴影效果。 
 			            shadowColor: "#fff",		//阴影颜色。支持的格式同color。

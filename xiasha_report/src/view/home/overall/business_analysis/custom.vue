@@ -1,28 +1,23 @@
 <template>
-		<div class="custom">
-			<Charts :id="id" class="echartall" :option="option" :height="height" :width="width"/>
-		</div>		
+		<!-- <div class="custom"> -->
+			<Charts :id="id" v-if="hackReset" class="echartall" :option="option" :height="height" :width="width"/>
+		<!-- </div>		 -->
 </template>
 <script>
+	import hackReset from "../../../../mixins/hackReset.js"
 	import echarts from "echarts"
 	export default {
 		name:"custom",
 		data() {
 			return {
 			id:"custom",
-			width:"620px",
-			height:"230px",	
+			width:"100%",
+			height:"100%",	
 			option:{
 					 title: {
 						text: '进驻客户数量',
 						x:'left',
-						textStyle: {
-							fontSize: 18,
-							backgroundColor:"#f0f",
-							fontStyle: 'normal',
-							fontWeight: 'normal',
-							color:"#fff"
-						},
+						textStyle: this.$store.state.textStyle,
 					},
 					legend: {
 						data:[],
@@ -35,6 +30,7 @@
 					grid: {
 						left: '3%',
 						right: '4%',
+						top:'25%',
 						bottom: '3%',
 						containLabel: true
 					},
@@ -74,15 +70,21 @@
 				}
 			}
 		},
+		mixins: [hackReset],
 		mounted(){
 			// this.getlist(1)
 			
 		},
 		methods: {
-			getlist(id){
-				
-				this.$api.getcomeNumber(id).then(res=>{
-					
+			getlist(version,id,year){
+				this.hackReset = false
+					this.$nextTick(() => {
+					this.hackReset = true
+				})
+				this.$api.getcomeNumber(version,id,year).then(res=>{
+					if(res.data.length==0){
+						return
+					}
 					var list=[]
 					var color=['#00fff9','#be5769','#666666',];
 					var type=["bar","line","line",]
@@ -117,7 +119,7 @@
 												// color: color[i],
 												lineStyle: {
 													color: color[i],
-													width:4
+													width:2
 												}
 											}
 										},
@@ -135,9 +137,6 @@
 </script>
 
 <style scoped>
-/* 	.customers{
-		width:600px;
-		/* height:310px; */
-		/* padding: 2% 0; */
+
 	
 </style>

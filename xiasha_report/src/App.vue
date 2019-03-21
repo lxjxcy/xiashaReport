@@ -12,6 +12,7 @@ export default {
 </script>
 
 <style>
+	 @import './style/meta.css';
 	*{
 		padding:0;
 		margin:0;
@@ -56,11 +57,15 @@ ul li{
 .r{
 	float: right;
 }
-	
+.comm-padd{
+	padding:0.03rem;
+	box-sizing: border-box;
+}
 .echartall{
-		margin: 4px;
-		padding:1px 2px;
-		border: 2px solid hsla(0,0%,90%,.2); 
+		/* margin: 5px; */
+		padding:10px 5px;
+		box-sizing: border-box;
+		border: 0.02rem solid hsla(0,0%,90%,.2); 
     background: linear-gradient(to left, #fff, #fff) left top no-repeat, 
                 linear-gradient(to bottom, #fff, #fff) left top no-repeat, 
                 linear-gradient(to left, #fff, #fff) right top no-repeat,

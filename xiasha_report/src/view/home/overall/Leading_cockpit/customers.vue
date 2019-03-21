@@ -1,7 +1,7 @@
 <template>
-		<div class="customers">
-			<Charts :id="id" class="echartall" :option="option" :height="height" :width="width"/>
-		</div>		
+		
+	<Charts :id="id" v-if="hackReset" class="echartall" :option="option" :height="height" :width="width"/>
+	
 </template>
 <script>
 	import echarts from "echarts"
@@ -11,18 +11,14 @@
 			return {
 			id:"customers",
 			width:"100%",
-			height:"300px",	
+			hackReset:true,
+			number:25,
+			height:"100%",	
 			option:{
 					 title: {
 						text: '进驻客户数量',
 						x:'left',
-						textStyle: {
-							fontSize: 18,
-							backgroundColor:"#f0f",
-							fontStyle: 'normal',
-							fontWeight: 'normal',
-							color:"#fff"
-						},
+						textStyle: this.$store.state.textStyle,
 						
 					},
 					legend: {
@@ -36,6 +32,7 @@
 					grid: {
 						left: '3%',
 						right: '4%',
+						top: '30%',
 						bottom: '3%',
 						containLabel: true
 					},
@@ -76,13 +73,21 @@
 			}
 		},
 		mounted(){
-			this.getlist()
+			// this.getList()
 			
 		},
 		methods: {
-			getlist(){
-				this.$api.getCustomerNumber().then(res=>{
+			getList(version,year){
+				this.hackReset = false
+					this.$nextTick(() => {
+					this.hackReset = true
+				})
+				this.$api.getCustomerNumber(version,year,this.number).then(res=>{
+					if(res.data.length==0){
+						return
+					}
 					var list=[]
+					
 					var color=['#00fff9','#be5769','#666666',];
 					var type=["bar","line","line",]
 					this.option.legend.color=color;
@@ -94,8 +99,6 @@
 							if(e.group=="进驻客户"){
 								var len=e.content.length-1;
 								var total=e.content[len].total;
-								console.log(total.length)
-								
 								this.option.title.text="进驻客户数量"+total;
 								
 							}
@@ -114,7 +117,7 @@
 										type:type[i],
 										// stack: '总量',
 										x:20,
-										barWidth : 15,//柱图宽度
+										barWidth : 20,//柱图宽度
 										data:numdata,
 										itemStyle: {//直线颜色
 											normal: {
@@ -146,9 +149,5 @@
 </script>
 
 <style scoped>
-	.customers{
-		/* width:600px; */
-		height:310px;
-		/* padding: 2% 0; */
-	}
+
 </style>

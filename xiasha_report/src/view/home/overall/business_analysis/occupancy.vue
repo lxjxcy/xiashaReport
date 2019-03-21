@@ -1,9 +1,10 @@
 <template>
-	<div class="occupancy" >
+	<!-- <div class="occupancy" > -->
 		<Charts :id="id" v-if="hackReset"  :option="option" :height="height" :width="width"/>
-	</div>
+	<!-- </div> -->
 </template>
 <script>	
+// import hackReset from "../../../../mixins/hackReset.js"
 import echarts from "echarts";
 	export default {
 		name:"occupancy",
@@ -11,21 +12,16 @@ import echarts from "echarts";
 			return {
 				id:"occupancys",
 				hackReset:true,
-				width:"850px",
+				width:"100%",
+				number:11,
 				init:"",
-				height:"200px",
+				height:"100%",
 				
 				option:{
 				    title : {
 							text: '出租概率',
 							x:'left',
-							textStyle: {
-								fontSize: 18,
-								backgroundColor:"#f0f",
-								fontStyle: 'normal',
-								fontWeight: 'normal',
-								color:"#fff"
-							},
+							textStyle: this.$store.state.textStyle,
 					},
 					// color:['#BBDEFB',"#eee"],
 					tooltip : {
@@ -33,23 +29,10 @@ import echarts from "echarts";
 					},
 					grid: {
 						left: '0',
-						top:"-10"	
+						top:"-20"	,
+						bottom:"0"
 					},
-// 					legend: {
-// 						orient: 'vertical',
-// 						left: '7%',
-// 						show:true,
-// 						icon : 'circle',
-// 						borderColor :'#fff',
-// 						top:'10%',
-// 						// data:["2号楼","2号楼"],
-// 						textStyle:{
-// 								color:['#fff'],
-// 					   },
-// 						  formatter:(name)=>{
-// 								return name+'\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t'
-// 							}
-// 					},
+
 					textStyle:{
 						color:'#fff',
 					},
@@ -62,13 +45,17 @@ import echarts from "echarts";
 		mounted(){
 			// this.getlist(1)
 		},
+		// mixins: [hackReset],
 		methods: {
 						clear(){
 							window.clearInterval(this.init)
 						},
-						getlist(id){
+						getlist(version,id,year,month,){
 							this.clear()	
-							this.$api.getReaBuilding(id).then(res=>{
+							this.$api.getYearMonthIdReport(version,id,year,month,this.number).then(res=>{
+								if(res.data.length==0){
+									return
+								}
 								this.hackReset = false
 									this.$nextTick(() => {
 									this.hackReset = true
@@ -87,7 +74,7 @@ import echarts from "echarts";
 									 list.push(res.data.slice(i*6,(i+1)*6))
 									 arr.push(list)
 								}
-								console.log(arr)
+								// console.log(arr)
 								this.savedata(arr[0][0])				
 									var index=0;
 								this.init=window.setInterval(()=>{
@@ -112,21 +99,49 @@ import echarts from "echarts";
 					needdata.push({
 					name: '',
 					type: 'pie',
-					radius: ['35%', '52%'],
-				center: [center + "%", "50%"],//饼图的位置 
+					radius: ['48%', '65%'],
+				center: [center + "%", "60%"],//饼图的位置 
 				avoidLabelOverlap: false,
 				hoverAnimation:false,
-				  label: { //  饼图图形上的文本标签
-                normal: { // normal 是图形在默认状态下的样式
-                    show: true,
-                    position: 'center',
-                    color: '#fff',
-                    fontSize: 14,
-										
-                    // fontWeight: '100',
-                    formatter: '{b}\n{c}%' // {b}:数据名； {c}：数据值； {d}：百分比
-                }
-            },
+
+						label: {
+							 normal: { 
+								   position: 'center',
+							formatter:(params)=>{
+								var name=params.name
+								var value=params.percent+"%";
+								// return name+"\r\n"+value
+									var arr = [
+									'{a|'+name+'}',
+									'{b|'+value+'}',
+								]
+								return arr.join('\n\n')
+							},
+							textStyle:{
+								rich:{
+									a:{
+										fontSize:14,
+										verticalAlign:'top',
+										align:'left',
+										color:"#bf9232",
+									},
+									b:{
+										fontSize:14,
+										align:'left',
+										color:"#fff",
+									}
+								},
+								}
+							},
+							
+							
+							
+							
+							color:"#fff",
+								emphasis: {
+										show: true
+								}
+						},
             data: [{
                     value: (e.rentalRate*100).toFixed(0)/100,
                     name: e.buildingName,
@@ -164,8 +179,8 @@ import echarts from "echarts";
 							{
 								name: '',
 								type: 'pie',
-								radius: ['42%'],
-								center: [center-0.5 + "%", "48%"],//饼图的位置 
+								radius: ['54%'],
+								center: [center-0.2 + "%", "59%"],//饼图的位置 
 								avoidLabelOverlap: false,
 								hoverAnimation:false,
 								label: { //  饼图图形上的文本标签

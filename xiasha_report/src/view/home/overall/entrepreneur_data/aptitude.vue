@@ -1,21 +1,21 @@
 <template>
-	<div class="echartall Qualification">
+	<div class="echartall aptitude">
 		<table class="tabth">
-			<tr style="display: flex;justify-content: space-between;">
+			<tr class="tab1">
 				<th>企业资质资质名称</th>
 				<th>数量</th>
 			</tr>
-			<vue-seamless-scroll :data="list" class="seamless-warp">
-				<table class="item">
-					<tr v-for="item in list" style="display: flex;justify-content: space-between;">
-						<td class="type">{{item.type}}</td>
-						<td class="num" >{{item.num}}</td>
-					</tr>
-					
-				</table>
-			</vue-seamless-scroll>
+			
 		</table>
-		
+		<vue-seamless-scroll :data="list" class="seamless-warp">
+			<table class="item table2">
+				<tr v-for="item in list">
+					<td >{{item.type}}</td>
+					<td  >{{item.num}}</td>
+				</tr>
+				
+			</table>
+		</vue-seamless-scroll>
 	</div>
 </template>
 
@@ -28,11 +28,14 @@
 			}
 		},
 		mounted(){
-			this.getlist()
+			// this.getList()
 		},
 		methods: {
-			getlist(){
-				this.$api.getCompanyQualification().then(res=>{
+			getList(version,year,month){
+				this.$api.getCompanyQualification(version,year,month).then(res=>{
+					if(res.data.length==0){
+						return
+					}
 					this.list=res.data
 				})
 			},
@@ -56,32 +59,41 @@
 
 <style scoped>
 	.seamless-warp {
-		height: 180px;
+		height: 80%;
+		width:100%;
 		overflow: hidden;
 		/* line-height: 20px; */
 	}
-	.Qualification{
-		width:400px;
-		height:230px;
+	.aptitude{
+		width:100%;
+		height:100%;
 		
 	}
 	.tabth{
-		width:400px;
+		width:100%;
+		height:20%
 		
 	}
-	table tr th{
-		text-align: center;
-		width:200px;
-		line-height:35px;
-		font-size: 18px;
-		color:#ffb400;
+	table{
+		width:100%;
+	}
+	tabth tr{
+		width:100%;
 	}
 
-	table tr td{
-		width:200px;
+
+	.tabth .tab1 th{
 		text-align: center;
-		
+		width:50%;
+		/* line-height:px; */
+		font-size: 0.14rem;
+		color:#ffb400;
 	}
+	.table2{
+		height:60%;
+	}
+
+
 	
 
 </style>

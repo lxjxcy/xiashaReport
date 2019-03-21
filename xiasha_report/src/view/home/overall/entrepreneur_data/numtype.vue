@@ -1,7 +1,7 @@
 <template>
-	<div class="scale">
-		<Charts :id="id" class="echartall" :option="option" :height="height" :width="width"/>
-	</div>	
+	<!-- <div class="scale"> -->
+		<Charts :id="id" v-if="hackReset" class="echartall" :option="option" :height="height" :width="width"/>
+	<!-- </div>	 -->
 </template>
 
 <script>
@@ -10,24 +10,19 @@
 		data(){
 			return{
 				id:"numtype",
-				width:"380px",
-				height:"220px",
+				width:"100%",
+				height:"100%",
+				hackReset:true,
 				option:{
 					 title : {
 						text: '企业进驻数量类型占比top5',
 						x:'left',
-						textStyle: {//主标题文本样式{"fontSize": 18,"fontWeight": "bolder","color": "#333"}
-							// fontFamily: 'Arial, Verdana, sans...',
-							fontSize: 18,
-							backgroundColor:"#f0f",
-							fontStyle: 'normal',
-							fontWeight: 'normal',
-							color:"#fff"
-						},
+						textStyle: this.$store.state.textStyle,
 					},
 						grid: {
 							left: '3%',
 							right: '4%',
+							top:"20%",
 							bottom: '3%',
 							containLabel: true
 						},
@@ -42,8 +37,8 @@
 							 {
 							name:'',
 							type:'pie',
-							radius : [25, 70],
-							center : ['50%', '50%'],
+							radius : ["25%", "60%"],
+							center : ['50%', '60%'],
 							roseType : 'radius',
 // 							label: {
 // 								 formatter:(params)=>{
@@ -65,17 +60,17 @@
 										'{a|'+name+'}',
 										'{b|（'+value+'）}',
 									]
-									return arr.join('\n')
+									return arr.join('\n\n')
 								},
 								textStyle:{
 									rich:{
 										a:{
-											fontSize:12,
+											fontSize:15,
 											verticalAlign:'top',
 											align:'left',
 										},
 										b:{
-											fontSize:12,
+											fontSize:15,
 											align:'left',
 											color:"#fff",
 										}
@@ -104,11 +99,18 @@
 			}
 		},
 		mounted(){
-			this.getlist()
+			// this.getList()
 		},
 		methods:{
-			getlist(){
-				this.$api.getCompanyTopNume().then(res=>{
+			getList(version,year,month){
+				this.hackReset = false
+					this.$nextTick(() => {
+					this.hackReset = true
+				})
+				this.$api.getCompanyTopNume(version,year,month).then(res=>{
+					if(res.data.length==0){
+						return
+					}
 						this.option.series[0].data=this.getforeach(res.data)
 				})				
 			},

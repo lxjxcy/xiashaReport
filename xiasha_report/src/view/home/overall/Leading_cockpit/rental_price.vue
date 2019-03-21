@@ -1,55 +1,43 @@
 <template>
-	<div>
-		<div class="rental_price">
-			<Charts :id="id" class="echartall" :option="option" :height="height" :width="width"/>
-		</div>
-	
-	</div>
-	
+			<Charts :id="id" v-if="hackReset" class="echartall" :option="option" :height="height" :width="width"/>	
 </template>
 <script>	
+import util from "../../../../common/js/tool.js"
 	export default {
 		name:"rental_price",
 		data() {
 			return {
 				id:"rental_price",
+				hackReset:true,
 				width:"100%",
-				height:"223px",
+				height:"100%",
+				number:21,
+				init:'',
 				j:0,
 				option:{
 				     title: {
 						text: '租金收入月度趋势（万元）',
 						x:'left',
-						textStyle: {
-							fontSize: 18,
-							backgroundColor:"#f0f",
-							fontStyle: 'normal',
-							fontWeight: 'normal',
-							color:"#fff"
-						},
+						textStyle:this.$store.state.textStyle,
 						
 					},
 					legend: {
-						 data: [],
-						selectedMode:"single",
-						inactiveColor: '#999',
-						  selected:{
-// 							  '海聚中心':true,
-// 							  '文创园':false,
-// 							  '服务外包':false,
-// 							  '孵化器园区':false,
-// 							  '生命科技中心':false
-						  },
-						icon: "circle",
+						data:[],
+						
 						right: '3%',
 						top: '10%',
+						selectedMode:"single",
+						inactiveColor: '#999',
+						selected:{},
+						icon: "circle",
 						textStyle:{
-						color:['#fff']
+						color:["#fff"],
 						},
 					},
 					grid: {
 						left: '3%',
 						right: '4%',
+						top: '20%',
 						bottom: '3%',
 						containLabel: true,
 					},
@@ -90,48 +78,125 @@
 				
 		},
 		mounted(){
-			this.getlist()	
+			// this.getList()	
 					this.moveLine()
 		},
 		methods: {
-				getlist(){
-					this.$api.getRentMonth().then(res=>{
-						var list=[]
-						var color=['#00975f','#00889c','#a52a5d','#ff9200',"#d62000"]
-						this.option.legend.color=color;
-						var selecteddata=res.data
-							res.data.forEach((e, i, a)=> {
-								this.option.legend.data[i]=e.group;	
-								var numdata=[]
-								var month=[]
-								e.content.forEach((me,mi,ma)=>{
-									numdata.push(me.num)
-									month.push(me.month+'月')
-								})
-								this.option.xAxis.data=month;								
-									list.push({
-											name:e.group,
-											type:'line',
-											 // symbol: "none",
-											// stack: '总量',
-											data:numdata,
-											animation: false,
-// 										
-											itemStyle: {//直线颜色
-												normal: {
-													color: color[i],
-													lineStyle: {
-														color: color[i],
-														width:5
-													}
+			clear(){
+				window.clearInterval(this.init)
+			},
+				getList(version,year){
+					this.hackReset = false
+						this.$nextTick(() => {
+						this.hackReset = true
+					})
+					this.clear()
+
+					this.$api.getRentMonth(version,year,this.number).then(res=>{
+						if(res.data.length==0){
+							return
+						}
+						 this.savedata(res.data)
+											 var arr=[]
+												var len=res.data.length;						
+												if(len<=1){
+													this.savedata(res.data)						
+													return;
 												}
-											},
-										
-									})
-							})
-							this.option.series=list;							
+												for(var i=0;i<len;i++){
+													var list=[]
+													 list.push(res.data.slice(i,i+1))
+													 arr.push(list)
+												}						
+												this.savedata(arr[0][0])
+													var index=0;							
+												this.init=window.setInterval(()=>{
+													index++;
+													if(index==res.data.length){
+														index=0
+													}
+						
+													this.hackReset = false
+														this.$nextTick(() => {
+														this.hackReset = true
+													})
+													// console.log(arr[index][0])
+													this.savedata(arr[index][0])		
+																				
+												},2000)
+// 						var list=[]
+// 						var color=['#00975f','#00889c','#a52a5d','#ff9200',"#d62000"]
+// 						this.option.legend.color=color;
+// 						var selecteddata=res.data
+// 						this.option.legend.data=[];
+// 							res.data.forEach((e, i, a)=> {
+// 								this.option.legend.data[i]=e.group;	
+// 								var numdata=[]
+// 								var month=[]
+// 								e.content.forEach((me,mi,ma)=>{
+// 									numdata.push(me.num)
+// 									month.push(me.month+'月')
+// 								})
+// 								this.option.xAxis.data=month;								
+// 									list.push({
+// 											name:e.group,
+// 											type:'line',
+// 											 // symbol: "none",
+// 											// stack: '总量',
+// 											data:numdata,
+// 											animation: false, 										
+// 											itemStyle: {//直线颜色
+// 												normal: {
+// 													color: color[i],
+// 													lineStyle: {
+// 														color: color[i],
+// 														width:5
+// 													}
+// 												}
+// 											},
+// 										
+// 									})
+// 							})
+// 							this.option.series=[]
+// 							this.option.series=list;							
 					})
 				},
+							savedata(data){
+								var list=[]
+								var color=util.randomColor()
+								this.option.legend.color=color;
+								data.forEach((e, i, a)=> {
+									this.option.legend.data[i]=e.group;	
+									var numdata=[]
+									var month=[]
+									e.content.forEach((me,mi,ma)=>{
+										numdata.push(me.num)
+										month.push(me.month+'月')
+									})
+									this.option.xAxis.data=month;
+										list.push({
+												name:e.group,
+												type:'line',
+												animation: false,
+												// stack: '总量',
+												data:numdata,
+												
+				
+												itemStyle: {//直线颜色
+													normal: {
+														
+														color: color,
+														lineStyle: {
+															color: color,
+															width:5
+														}
+													}
+												},
+											
+										})
+								})
+								this.option.series=list;
+							},
 				 moveLine(){
 				  this.timer = setTimeout(()=>{
 					let selected = {};
@@ -158,13 +223,10 @@
 
 </script>
 <style scoped>
-	.rental_price{
-		height:233px;
-		/* height:260px; */
-		/* border-right:2px solid #fff;
-		border-bottom:2px solid #fff; */
-		/* padding: 2% 0; */
-	}
+/* 	.rental_price{
+		height:33%;
+
+	} */
 
 	
 </style>

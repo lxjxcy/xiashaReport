@@ -1,8 +1,5 @@
 <template>
-	<div class="rental_area">
-		<Charts :id="id" class="echartall" :option="option" :height="height" :width="width"/>
-	</div>
-	
+		<Charts :id="id" v-if="hackReset" class="echartall" :option="option" :height="height" :width="width"/>
 </template>
 
 <script>
@@ -13,20 +10,16 @@
 			return{
 				id:"rental_area",
 				width:"100%",
-				height:"210px",
+				height:"100%",
+				hackReset:true,
+				number:24,
 				xAxis:['01月','02月','03月','04月','05月','06月','07月','08月','09月','10月','11月','12月',],
 				data:[340, 532, 401, 222, 390, 120,45,340, 532, 401, 222, 390, 120,0],
 				option:{
 							title : {
 								text: '在租面积',
 								x:'left',
-								textStyle: {
-								fontSize: 20,
-								 backgroundColor:'rgba(128, 128, 128, 0.1)', //rgba设置透明度0.1
-								fontStyle: 'normal',
-								fontWeight: 'normal',
-								color:"#fff"
-								},
+								textStyle: this.$store.state.textStyle,
 							},
 							textStyle:{
 								color:'#fff',
@@ -38,6 +31,7 @@
 							grid: {
 								left: '3%',
 								right: '4%',
+								top:"35%",
 								bottom: '3%',
 								containLabel: true,
 								
@@ -119,7 +113,7 @@
 							itemStyle: { color: "#0074d6" },//波线的阴影
 							backgroundStyle :{color:'#00b3ff'},//球状的背景颜色
 							radius: '40%',//水波图的半径
-							center:["84%",'20.5%'],
+							center:["70%",'20.5%'],
 							outline: {
 								show: false //true显示水波图上的文字
 							},
@@ -147,11 +141,18 @@
 		},
 		mounted(){
 			this.option.xAxis.data=this.xAxis;
-			this.getlist()
+			// this.getList()
 		},
 		methods:{
-			getlist(){
-				this.$api.getRentArea().then(res=>{
+			getList(version,year){
+				this.hackReset = false
+					this.$nextTick(() => {
+					this.hackReset = true
+				})
+				this.$api.getYearReport(version,year,this.number).then(res=>{
+					if(res.data.length==0){
+						return
+					}
 					var len=res.data.length-1
 					this.option.series[1].data[0].value=1-res.data[len].percent;
 					var numdata=[]
@@ -160,6 +161,7 @@
 						numdata.push(e.num)
 						month.push(e.month+'月')
 					})
+					
 					this.option.series[0].data=numdata;					
 				})
 			}
@@ -169,7 +171,7 @@
 
 <style scoped>
 	.rental_area{
-		height:233px
+		height:33%;
 		/* height:260px; */
 	}
 

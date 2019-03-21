@@ -1,7 +1,7 @@
 <template>
-	<div class="financing ">
-		<Charts :id="id" class="echartall" :option="option" :height="height" :width="width"/>
-	</div>
+	<!-- <div class="financing "> -->
+		<Charts :id="id" v-if="hackReset" class="echartall" :option="option" :height="height" :width="width"/>
+	<!-- </div> -->
 	
 </template>
 
@@ -12,20 +12,15 @@
 		data(){
 			return{
 				id:"financ",
-				width:"450px",
-				height:"230px",
+				width:"100%",
+				number:5,
+				hackReset:true,
+				height:"100%",
 				option:{
 					title: {
 							text: '企业融资情况',
 							x:'left',
-							textStyle: {//主标题文本样式{"fontSize": 18,"fontWeight": "bolder","color": "#333"}
-								// fontFamily: 'Arial, Verdana, sans...',
-								fontSize: 18,
-								backgroundColor:"#f0f",
-								fontStyle: 'normal',
-								fontWeight: 'normal',
-								color:"#fff"
-							},
+							textStyle: this.$store.state.textStyle,
 							
 						},	
 						grid: {
@@ -110,11 +105,18 @@
 			}
 		},
 		mounted() {
-			this.getlist()
+			// this.getList()
 		},
 		methods:{
-			getlist(){
-				this.$api.getCompanynFinancing().then(res=>{
+			getList(version,year,month){
+				this.hackReset = false
+					this.$nextTick(() => {
+					this.hackReset = true
+				})
+				this.$api.getYearMonthReport(version,year,month,this.number).then(res=>{
+					if(res.data.length==0){
+						return
+					}
 					var yAxisdata=[]
 					var listnum=[]
 					res.data.forEach((e, i, a)=> {

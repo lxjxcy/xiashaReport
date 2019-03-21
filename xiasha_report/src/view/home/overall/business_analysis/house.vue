@@ -1,34 +1,26 @@
 <template>
-	<div>
-		<div class="house echartall">
-			<Charts :id="id"  :option="option" :height="height" :width="width"/>
-		</div>
-	</div>
+	
+			<Charts :id="id" v-if="hackReset" class="echartall" :option="option" :height="height" :width="width"/>
+	
 
 </template>
 <script>	
-
+import hackReset from "../../../../mixins/hackReset.js"
 	export default {
 		name:"house",
 
 		data() {
 			return {
 				id:"house",
-			
-				width:"430px",
-				height:"200px",
+			number:14,
+				width:"100%",
+				height:"100%",
 			
 				option:{
 					title : {
 						text: '出租率分析',
 						x:'left',
-						textStyle: {
-							fontSize: 20,
-							backgroundColor:"#f0f",
-							fontStyle: 'normal',
-							fontWeight: 'normal',
-							color:"#fff"
-						},
+						textStyle: this.$store.state.textStyle,
 					},
 					grid: {
 						left: '10%',
@@ -140,13 +132,22 @@
 			
 			}
 		},
+		mixins: [hackReset],
 		mounted(){
 			// this.getlist(1)
 		// this.option.series[0].data=this.contrast;
 		},
 		methods: {
-			getlist(id){
-				this.$api.getArea(id).then(res=>{
+			getlist(version,id,year,month,){
+			this.hackReset = false
+				this.$nextTick(() => {
+				this.hackReset = true
+			})
+
+				this.$api.getYearMonthIdReport(version,id,year,month,this.number).then(res=>{
+					if(res.data.length==0){
+						return
+					}
 						this.savedata(res.data)
 				})
 			},

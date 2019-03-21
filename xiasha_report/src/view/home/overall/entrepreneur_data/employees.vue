@@ -1,9 +1,9 @@
 <template>
-	<div class="employees">
-		<Charts :id="id" class="echartall" :option="option" :height="height" :width="width"/>
+	<!-- <div class="employees"> -->
+		<Charts :id="id" v-if="hackReset" class="echartall" :option="option" :height="height" :width="width"/>
 		<!-- <div id="myChart" class="echartall" :style="{width: '100%', height: '220px'}"></div> -->
 		
-	</div>
+	<!-- </div> -->
 	
 </template>
 <script>	
@@ -12,20 +12,15 @@
 		data() {
 			return {
 				id:"employees",
-				width:"300px",
-				height:"210px",
+				width:"100%",
+				height:"100%",
+				hackReset:true,
 				num:"249人",
 				option:{
 				    title : {
 						text: '',
 						x:'left',
-						textStyle: {
-							fontSize: 20,
-							backgroundColor:"#f0f",
-							fontStyle: 'normal',
-							fontWeight: 'normal',
-							color:"#fff"
-						},
+						textStyle: this.$store.state.textStyle,
 					},
 					color:['#80da81','#ff0000','#0091ff','#ff9200'],
 					tooltip : {
@@ -92,11 +87,18 @@
 			}
 		},
 		mounted(){
-			this.getlist()
+			// this.getList()
 		},
 		methods: {
-			getlist(){
-				this.$api.getCompanynmployeesNumn().then(res=>{
+			getList(version,year,month){
+				this.hackReset = false
+					this.$nextTick(() => {
+					this.hackReset = true
+				})
+				this.$api.getCompanynmployeesNumn(version,year,month).then(res=>{
+					if(res.data.length==0){
+						return
+					}
 					var data=[];
 				
 					var arr=res.data;

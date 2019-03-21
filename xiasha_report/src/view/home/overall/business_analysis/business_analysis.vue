@@ -1,32 +1,34 @@
 <template>
 	<div class="business_analysis">
-		<div style="display: flex;justify-content: flex-start;">
-			<div class="title echartall">
-				<ul>
-					<li v-for="(item,index) in list"><span :class="ifselect==index+1?'yesSelect':'noSelect'">{{item.communityName}}</span></li>
-				</ul>
-				<occupancy  ref="occupancyChild"></occupancy>
-			</div>
-			<div>
-				<custom ref="customChild"></custom>		
-			</div>
+		<div style="display: flex;justify-content: flex-start;height:25%" class="comm-padd">
+			<ul class="title echartall" style="height:100%;width: 60%;">
+				<ul style="height:20%;margin-bottom: 0.1rem;">
+					<li v-for="(item,index) in list" @click="getId(item,index)">
+						<!-- <span :class="ifselect==index+1?'yesSelect':'noSelect'">{{item.communityName}}</span> -->
 					
+					<span v-if="ifselect==index+1" class="yesSelect">{{item.communityName}}</span>
+					</li>
+				</ul>
+				<li style="height:80%;" class="comm-padd"><occupancy  ref="occupancyChild"></occupancy></li>
+			</ul>
+			
+			<div style="height:100%;width: 40%; padding-left:0.06rem;box-sizing: border-box;">
+				<custom ref="customChild"></custom>		
+			</div>					
 		</div>
-		
-		<div style="display: flex;justify-content: flex-start;">
-				<div>
-					<ul style="display: flex;justify-content: flex-start;">
-						<li><income ref="incomeChild"></income></li>
-						<li><attract ref="attractChild"></attract></li>
-						
+		<div style="display: flex;justify-content: flex-start;height:75%;width:100%">
+				<div style="width:80%">
+					<ul style="display: flex;justify-content: flex-start;height:55%">
+						<li style="width:48%;" class="comm-padd"><income ref="incomeChild"></income></li>
+						<li style="width:52%;" class="comm-padd"><attract ref="attractChild"></attract></li>
 					</ul>
-					<ul style="display: flex;justify-content: flex-start;">
-							<li><house ref="houseChild"></house></li>
-							<li><vacancy ref="vacancyChild"></vacancy></li>
-							<li><daynum ref="daynumChild"></daynum></li>
+					<ul style="display: flex;justify-content: flex-start;height:45%">
+							<li style="width:40%;" class="comm-padd"><house ref="houseChild"></house></li>
+							<li style="width:30%;" class="comm-padd"><vacancy ref="vacancyChild"></vacancy></li>
+							<li style="width:30%;" class="comm-padd"><daynum ref="daynumChild"></daynum></li>
 					</ul>
 				</div>
-				<div>
+				<div style="width:20%" class="comm-padd">
 					<demand ref='demandChild'></demand>
 				</div>
 			
@@ -37,6 +39,7 @@
 </template>
 
 <script>
+	import util from "../../../../common/js/tool.js"
 	import { mapGetters, mapState,mapMutations,mapActions} from 'vuex'
 	import occupancy from "./occupancy.vue"//出租绿
 	// import occupancy from "./rentes/occupancy.vue"
@@ -63,62 +66,120 @@ import custom from "./custom.vue"//进驻客户
 		data(){
 			return{
 				list:[],
+				number:20,
+				init:'',
 				ifselect:1,
-				
+				width:window.screen.width,
+				height:window.screen.height,
+				version:this.$store.state.version,
+				year:this.$store.state.year,
+				month:this.$store.state.month
 			}
 		},
+		
 		mounted(){
-			this.getlist()
-			
-			var classindex=1
-			setInterval(()=>{
-				classindex++;
-				if(classindex==this.list.length+1){
-					classindex=1
+			let path = this.$route.matched[1].path
+			if(path.indexOf('/businessAnalysis')==0){
+				var id=util.parseUrlData(window.location.href)
+				if(id){
+					var year=id.hasOwnProperty('year')
+					if(year){
+						this.year=id.year,
+						this.$store.state.year=id.year
+					}
+					var month=id.hasOwnProperty('month')
+					if(month){
+						this.month=id.month
+						this.$store.state.month=id.month	
+					}
+					var version=id.hasOwnProperty('version')
+					if(version){
+						this.version=id.version;
+						this.$store.state.version=id.version
+					}
 				}
-			  this.getclass(classindex)
-			},1200000000000000000)
+				this.requestData(this.version,this.year,this.month)
+			}
+			
+			
+			
+			
 		},
+		
 		methods:{
-			getlist(){
-				this.$api.getparkList().then(res=>{
+			requestData(version,year,month){
+				var id=util.parseUrlData(window.location.href)	
+					if(!id){
+						this.getlist(version,year,month)	
+						this.move()
+						
+					}else{
+						var communityList=id.hasOwnProperty('communityList')
+						if(communityList){
+							this.clear()
+			
+							this.list=JSON.parse(this.$route.query.communityList)
+			
+							this.setdata(version,this.list[0].communityId,year,month)
+							if(this.list.length>0){
+								this.move()
+							}
+						}else{
+							this.getlist(version,year,month)	
+							this.move()
+						}
+						
+						
+					}
+				
+			},
+			move(){
+				var classindex=1
+				this.init=window.setInterval(()=>{
+					classindex++;
+					if(classindex==this.list.length+1){
+						classindex=1
+					}
+					this.getclass(classindex)
+				},15000)
+			},
+			clear(){
+				window.clearInterval(this.init)
+			},
+			getId(item,index){
+				this.clear()
+				this.getclass(index+1)
+				var classindex=index+1
+				this.init=window.setInterval(()=>{
+					classindex++;
+					if(classindex==this.list.length+1){
+						classindex=1
+					}
+					this.getclass(classindex)
+				},15000)
+
+			},
+			getlist(version,year,month){
+				this.$api.getYearMonthReport(version,year,month,this.number).then(res=>{
 					this.list=res.data;
-					
-					this.setdata(res.data[0].communityId)
+					this.setdata(this.version,res.data[0].communityId,this.year,this.month)
 			})
-					
 			},
 			// ...mapActions(["increment"]),
 			getclass(classindex){
 				this.ifselect=classindex;
-				this.setdata(this.list[classindex-1].communityId)
-// 				if(classindex==1){
-// 					
-// 				}
-// 				if(classindex==2){
-// 					this.setdata(this.list[1].communityId)
-// 				}
-// 				if(classindex==3){
-// 					this.setdata(this.list[2].communityId)
-// 				}
-// 				if(classindex==4){
-// 					this.setdata(this.list[3].communityId)
-// 				}
-// 				if(classindex==5){
-// 					this.setdata(this.list[4].communityId)
-// 				}
-				
+				this.setdata(this.version,this.list[classindex-1].communityId,this.year,this.month)	
 			},
 		
-			setdata(id){
-				this.$refs.occupancyChild.getlist(id)
-				this.$refs.incomeChild.getlist(id)
-				this.$refs.houseChild.getlist(id)
-				this.$refs.attractChild.getlist(id)
-				this.$refs.daynumChild.getlist(id)
-				this.$refs.demandChild.getlist(id)
-				this.$refs.vacancyChild.getlist(id)
-				this.$refs.customChild.getlist(id)
+			setdata(version,id,year,month){
+				this.$refs.occupancyChild.getlist(version,id,year,month)
+				this.$refs.incomeChild.getlist(version,id,year)
+				this.$refs.houseChild.getlist(version,id,year,month)
+				this.$refs.attractChild.getlist(version,id,year,month)
+				this.$refs.daynumChild.getlist(version,id,year,month)
+				this.$refs.demandChild.getlist(version,id,year,month)
+				this.$refs.vacancyChild.getlist(version,id,year,month)
+				this.$refs.customChild.getlist(version,id,year)
 			}
 			
 		}
@@ -128,37 +189,48 @@ import custom from "./custom.vue"//进驻客户
 
 <style scoped>
 	.business_analysis{
-		width:1500px;
-		height:700px;
-		/* background: #A2BE35; */
-	}
+		width:100%;
+		height:100%;
+		
+	 }
 	.title{
 		color:#fff;
-		height:230px;
+		/* height:2.3rem; */
 	}
 	.title ul{
 		display:flex ;
 		/* margin-top:1% ; */
 		justify-content: flex-start;
+		position: relative;
+		top:-0.9rem;
+		
+		/* overflow: hidden; */
+		
 		
 	}
+/* 	.title li{
+		float: left;
+	} */
 	.title li span{
-		line-height: 40px;
+		line-height: 0.4rem;
 		display: inline-block;
+		cursor: pointer;
 		/* border:2px solid #fff; */
-		padding:0 10px;
-		margin: 0 5px;
-		font-size: 18px;
+		padding:0 0.1rem;
+		margin: 0 0.05rem;
+		font-size: 0.18rem;
 	}
+	.title li span:hover{
+		color: #FBD676;
+	}
+
 	.yesSelect{
-		/* background: #00FFFF; */
-		/* color:#000 */
 		color:#00d4e0;
 		font-weight: 800;
-		border-bottom: 3px solid #00d4e0;
+		border-bottom: 0.02rem solid #00d4e0;
 	}
 	.noSelect{
-		/* background: #0c2771; */
+
 	}
 		
 

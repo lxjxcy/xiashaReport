@@ -1,31 +1,22 @@
 <template>
-		<div class="attract">
-			<Charts :id="id" class="echartall" :option="option" :height="height" :width="width"/>
-		</div>		
+		<!-- <div class="attract"> -->
+			<Charts :id="id" v-if="hackReset" class="echartall" :option="option" :height="height" :width="width"/>
+		<!-- </div>		 -->
 </template>
 <script>
+	import hackReset from "../../../../mixins/hackReset.js"
 	export default {
 		name:"attract",
 		data() {
 			return {
 				id:"attract",
-				width:"580px",
-				height:"230px",
-				xAxis:['01月','02月','03月','04月','05月','06月','07月','08月','09月','10月','11月','12月'],
-				clustering:[120, 132, 101, 134, 90, 230, 210,120, 132, 101, 134, 90, 230, 210],
-				technology:[220, 345, 191, 234, 111, 42, 45,220, 182, 567, 655, 732, 330, 233],
+				width:"100%",
+				height:"100%",
 				option:{
 					 title: {
 						text: '招商需求分析',
 						x:'left',
-						textStyle: {//主标题文本样式{"fontSize": 18,"fontWeight": "bolder","color": "#333"}
-							// fontFamily: 'Arial, Verdana, sans...',
-							fontSize: 18,
-							backgroundColor:"#f0f",
-							fontStyle: 'normal',
-							fontWeight: 'normal',
-							color:"#fff"
-						},
+						 textStyle:this.$store.state.textStyle,
 						
 					},
 					legend: {
@@ -80,14 +71,21 @@
 				}
 			}
 		},
+		mixins: [hackReset],
 		mounted(){
-			// this.getlist(1);
-			this.option.xAxis.data=this.xAxis;
+			
 		},
 		methods: {
-		 getlist(id){
-			 this.$api.getIntention(id).then(res=>{
-					this.savedata(res.data)
+		 getlist(version,id,year,month){
+			 this.hackReset = false
+			 	this.$nextTick(() => {
+			 	this.hackReset = true
+			 })
+			 this.$api.getIntention(version,id,year).then(res=>{
+				 if(res.data.length==0){
+				 	return
+				 }
+				this.savedata(res.data)
 			 })
 			},
 			savedata(data){
@@ -108,6 +106,7 @@
 							numdata.push(me.num)
 							month.push(me.month+'月')
 						})
+						this.option.xAxis.data=month
 						if(e.content.length>1){
 							list.push({
 									name:group,
@@ -137,7 +136,7 @@
 									smooth:true,
 									// stack: '总量',
 									x:20,
-									barWidth : 20,//柱图宽度
+									barWidth : 10,//柱图宽度
 									data:numdata,
 									itemStyle: {//直线颜色
 										normal: {

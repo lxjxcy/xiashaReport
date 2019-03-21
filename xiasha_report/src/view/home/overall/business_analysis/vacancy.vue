@@ -1,33 +1,26 @@
 
  
  <template>
- 	<div>
- 		<div class="containers">
- 			<Charts :id="id" class="echartall" :option="option" :height="height" :width="width"/>
- 		</div>
- 	</div>	
+
+ 			<Charts :id="id" v-if="hackReset" class="echartall" :option="option" :height="height" :width="width"/>
+ 	
  </template>
  <script>	
+ import hackReset from "../../../../mixins/hackReset.js"
  import echarts from "echarts"
  	export default {
  		name:"vacancy",
  		data() {
  			return {
  				id:"vacancy",
- 				width:"355px",
- 				height:"200px",
+ 				width:"100%",
+ 				height:"100%",
+				number:15,
  				option:{
  					title : {
  						text: '空置面积占比分析',
  						x:'left',
- 						textStyle: {//主标题文本样式{"fontSize": 18,"fontWeight": "bolder","color": "#333"}
- 							// fontFamily: 'Arial, Verdana, sans...',
- 							fontSize: 20,
- 							backgroundColor:"#f0f",
- 							fontStyle: 'normal',
- 							fontWeight: 'normal',
- 							color:"#fff"
- 						},
+ 						textStyle: this.$store.state.textStyle,
  					},
  					grid: {
  						left: '0',
@@ -57,7 +50,7 @@
  										'{a|'+name+'}',
  										'{b|（'+value+'）}',
  									]
- 									return arr.join('\n\n')
+ 									return arr.join('\n')
  								},
  								textStyle:{
  									rich:{
@@ -98,13 +91,21 @@
  				},			
  			}
  		},
+		mixins: [hackReset],
  		mounted(){
  			// this.getlist(1)
  		
  		},
  		methods: {
- 			getlist(id){
- 				this.$api.getAreaRoom(id).then(res=>{
+ 			getlist(version,id,year,month,){
+				this.hackReset = false
+					this.$nextTick(() => {
+					this.hackReset = true
+				})
+ 				this.$api.getYearMonthIdReport(version,id,year,month,this.number).then(res=>{
+					if(res.data.length==0){
+						return
+					}
  					var data=[];
  					res.data.forEach((e, i, a)=> {
  						data.push({

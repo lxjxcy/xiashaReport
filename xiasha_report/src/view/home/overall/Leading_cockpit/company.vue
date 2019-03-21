@@ -1,6 +1,5 @@
 <template>
 	<div class="company echartall">
-		<div>
 			<div class="hradertitle">
 				进驻企业
 			</div>
@@ -25,9 +24,6 @@
 			
 		</div>
 			
-
-
-	</div>
 	
 </template>
 
@@ -38,20 +34,23 @@
 		data() {
 	    return {
 	        animate:true,
+			number:26,
 	        list:[]
 	    }
 
 	  },
 	created(){
-		this.getlist()
+		// this.getList()
 //        setInterval(this.scroll,1000)
 	},
   methods: {
 	//获取企业数据
-	getlist(){
+	getList(version,year,month){
 		var params={}
-		this.$api.getCompanyDetail(params).then(res=>{
-			
+		this.$api.getYearMonthReport(version,year,month,this.number).then(res=>{
+			if(res.data.length==0){
+				return
+			}
 			this.list=res.data;
 			res.data.forEach((e,i,a)=>{
 				a[i]['areas']=e.area+"㎡"
@@ -81,48 +80,30 @@
 
 <style scoped>
 	.company{
-		width:450;
-		height:373px;
-		
+		width:100%;
+		height:100%;
 	}
-	.hradertitle{
-		font-size: 20px;
-		font-weight: 400;
-		line-height: 50px;
-		color:#fff;
-	}
+
 	 .seamless-warp {
-        height: 270px;
+        height: 75%;
         overflow: hidden;
-		line-height: 20px;
+		line-height: 0.2rem;
     }
 	table{
 		width:100%;
 	}
-	table tr th{
-		width: 150px;
-		text-align: center;
-		line-height: 50px;
-		color:#00FFFF;
-		
-	}
+
 	 table tr th span{
 		/* padding:0 6%; */
 		text-align: center;
-		line-height: 24px;
+		line-height: 0.24rem;
 		border-radius: 5%;
 		display: inline-block;
 		color:#00FFFF;
 		/* background: ; */
 		
 	}
-	table tr td{
-		width: 150px;
-		text-align: center;
-		/* overflow: hidden;
-		text-overflow: ellipsis;
-		white-space: nowrap */
-	}
+	
 
 
 </style>

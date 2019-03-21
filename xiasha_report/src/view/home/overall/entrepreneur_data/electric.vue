@@ -1,7 +1,7 @@
 <template>
-	<div class="electric">			
-	<Charts :id="id" class="echartall" :option="option" :height="height" :width="width"/>	
-	</div>
+	<!-- <div class="electric">			 -->
+	<Charts :id="id" v-if="hackReset" class="echartall" :option="option" :height="height" :width="width"/>	
+	<!-- </div> -->
 	
 </template>
 <script>	
@@ -12,9 +12,10 @@
 		data() {
 			return {
 				id:"electric",
-				width:"690px",
+				width:"100%",
+				hackReset:true,
 				j:0,
-				height:"220px",
+				height:"100%",
 				xAxis:['01月','02月','03月','04月','05月','06月','07月','08月','09月','10月','11月','12月',],
 				yAxis:["0","150","300","450","600","750"],
 
@@ -22,14 +23,7 @@
 				     title: {
 						text: '企业用电量（千度）',
 						x:'left',
-						textStyle: {//主标题文本样式{"fontSize": 18,"fontWeight": "bolder","color": "#333"}
-							// fontFamily: 'Arial, Verdana, sans...',
-							fontSize: 18,
-							backgroundColor:"#f0f",
-							fontStyle: 'normal',
-							fontWeight: 'normal',
-							color:"#fff"
-						},
+						textStyle: this.$store.state.textStyle,
 						
 					},
 					legend: {
@@ -89,11 +83,15 @@
 			}
 		},
 		mounted(){
-			this.getlist()
+			// this.getList()
 			this.moveLine()
 		},
 		methods: {
-				getlist(){
+				getList(){
+					this.hackReset = false
+						this.$nextTick(() => {
+						this.hackReset = true
+					})
 					this.$api.getCompanyElectric().then(res=>{
 						var list=[]
 						var color=['#8600cc','#ff0000','#fdb800','#d717ff','#fff']

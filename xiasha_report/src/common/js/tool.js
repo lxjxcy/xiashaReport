@@ -49,5 +49,18 @@ export default {
 				str += arr[index];
 			}
 			return str;
-		}
+		},
+		parseUrlData:function(url) {
+			var data = {}
+			if (url.split('?').length === 1) { // 无参数
+				return false;
+			} else {
+				url.split('?')[1].split('&').forEach(function (item) {
+					var arr
+					item && (arr = item.split('='))
+					arr && arr[0] && (data[arr[0]] = arr[1])
+				})
+				return data // data = {from:aaa,id:111}
+			}
+		},
 };

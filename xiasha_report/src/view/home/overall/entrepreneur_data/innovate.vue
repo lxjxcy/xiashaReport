@@ -1,7 +1,7 @@
 <template>
-	<div class="innovate">
-		<Charts :id="id" class="echartall" :option="option" :height="height" :width="width"/>
-	</div>
+	<!-- <div class="innovate"> -->
+		<Charts :id="id" v-if="hackReset" class="echartall" :option="option" :height="height" :width="width"/>
+	<!-- </div> -->
 	
 </template>
 
@@ -13,19 +13,14 @@
 			data() {
 				return {
 					id:"intellectual",
-					width:"300px",
-					height:"210px",
+					width:"100%",
+					height:"100%",
+					hackReset:true,
 				option:{
 						title : {
 							text: '知识产权',
 							x:'left',
-							textStyle: {
-								fontSize: 20,
-								backgroundColor:"#f0f",
-								fontStyle: 'normal',
-								fontWeight: 'normal',
-								color:"#fff"
-							},
+							textStyle: this.$store.state.textStyle,
 						},
 						grid: {
 							left: '0',
@@ -64,7 +59,7 @@
 								itemGap: 70,
 								
 								// radius : '60%',
-								radius: ['40%', '60%'],
+								radius: ['40%', '50%'],
 								center: ['20%', '60%'],//饼图的位置 
 								avoidLabelOverlap: false,
 								
@@ -78,15 +73,6 @@
 										position: 'center', 
 										  formatter:(argument)=> {
 												var html;
-												// console.log(this)
-												
-												// var total=0;
-												// var data=this.option.series[0].data
-// 												for (var i = 0;i < data.length; i++) {
-												// total += parseInt(argument.data.value);
-												// debugger
-// 						
-// 												}
 												html='知识产权\r\n\r\n';
 												return html;
 											},　
@@ -115,11 +101,18 @@
 				}
 			},
 			mounted(){
-					this.getlist()
+					// this.getList()
 			},
 			methods: {
-					getlist(){
-						this.$api.getCompanynInnovation().then(res=>{
+					getList(version,year,month){
+						this.hackReset = false
+							this.$nextTick(() => {
+							this.hackReset = true
+						})
+						this.$api.getCompanynInnovation(version,year,month).then(res=>{
+							if(res.data.length==0){
+								return
+							}
 							var data=[];
 							res.data.forEach((e, i, a)=> {
 								data.push({

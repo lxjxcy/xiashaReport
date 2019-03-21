@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import modules from './modules/index'
+import util from '../common/js/tool'
 // import createLogger from 'vuex/dist/logger'
 Vue.use(Vuex)
 
@@ -9,13 +10,30 @@ export default new Vuex.Store({
 		namespaced: true,
 		
 	 state: {
+		 year:util.getYear(),
+		 month:util.getMonth(),
+		 
+		 textStyle:{
+			 fontSize: 16,
+			 backgroundColor:"#f0f",
+			 fontStyle: 'normal',
+			 fontWeight: 'normal',
+			 color:"#fff"
+		 },
+		 version:'1.0',
+		 subtextStyle:{
+			 fontSize: 12,
+			 backgroundColor:"#f0f",
+			 fontStyle: 'normal',
+			 color:"#fff",
+			 fontWeight: 'normal',
+		 },
 		occupancyList:[],
 		incomeList:[],
 		houseList:[],
 		attractList:[],
 		vacancyList:[],
 		daynumList:[],
-
 	 },
 	 mutations:{
 

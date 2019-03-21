@@ -1,9 +1,9 @@
 <template>
-	<div>
+	<!-- <div> -->
 		
-		<Charts :id="id" class="echartall" :option="option" :height="height" :width="width"/>
+		<Charts :id="id" v-if="hackReset" class="echartall" :option="option" :height="height" :width="width"/>
 			
-	</div>
+	<!-- </div> -->
 	
 </template>
 
@@ -14,20 +14,14 @@
 		data(){
 			return{
 				id:"pertype",
-				width:"380px",
-				height:"220px",
+				width:"100%",
+				hackReset:true,
+				height:"100%",
 				option:{
 					 title : {
 						text: '企业员工人数类型占比top5',
 						x:'left',
-						textStyle: {//主标题文本样式{"fontSize": 18,"fontWeight": "bolder","color": "#333"}
-							// fontFamily: 'Arial, Verdana, sans...',
-							fontSize: 18,
-							backgroundColor:"#f0f",
-							fontStyle: 'normal',
-							fontWeight: 'normal',
-							color:"#fff"
-						},
+						textStyle: this.$store.state.textStyle,
 					},
 					grid: {
 						left: '3%',
@@ -44,11 +38,11 @@
 				color:['#8600cc','#ff0000','#fdb800','#d717ff','#fff'],
 				series : [
 					{
-			            name:'',
-			            type:'pie',
-			            radius : [25, 70],
-			            center : ['50%', '50%'],
-			            roseType : 'radius',
+							name:'',
+							type:'pie',
+							radius : ["25%", "60%"],
+							center : ['50%', '60%'],
+							roseType : 'radius',
 			        label: {
 			        	formatter:(params)=>{
 			        		var name=params.name
@@ -63,12 +57,12 @@
 			        	textStyle:{
 			        		rich:{
 			        			a:{
-			        				fontSize:12,
+			        				fontSize:15,
 			        				verticalAlign:'top',
 			        				align:'left',
 			        			},
 			        			b:{
-			        				fontSize:12,
+			        				fontSize:15,
 			        				align:'left',
 			        				color:"#fff",
 			        			}
@@ -98,11 +92,18 @@
 			}
 		},
 		mounted(){
-			this.getlist()
+			// this.getList()
 		},
 		methods:{
-			getlist(){
-				this.$api.getopEmployeesNume().then(res=>{
+			getList(version,year,month){
+				this.hackReset = false
+					this.$nextTick(() => {
+					this.hackReset = true
+				})
+				this.$api.getopEmployeesNume(version,year,month).then(res=>{
+					if(res.data.length==0){
+						return
+					}
 					this.option.series[0].data=this.getforeach(res.data)
 
 				})
